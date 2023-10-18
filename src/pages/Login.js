@@ -56,10 +56,10 @@ function SignInForm() {
         const response = await sendLogInOtp({ username: emailOrPhone });
         setVerifyShow(true);
         // console.log('ppp', response)
-        showSnackbar(response.data.message, "success");
+        showSnackbar(response?.data?.message, "success");
 
       } catch (error) {
-        showSnackbar(error.response.data.message, "error");
+        showSnackbar(error?.response?.data?.message, "error");
       }
     }
   };
@@ -80,9 +80,9 @@ function SignInForm() {
       }
    
       navigate('/appointments', { state: { loginSuccess: true } });
-      showSnackbar(response.data.message, "success");
+      showSnackbar(response?.data?.message, "success");
     } catch (error) {
-      showSnackbar(error.response.data.message, "error");
+      showSnackbar(error?.response?.data?.message, "error");
     }
   }
 
