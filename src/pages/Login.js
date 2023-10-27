@@ -110,7 +110,7 @@ function SignInForm() {
                 value={otp}
                 onChange={setOtp}
                 renderSeparator={<span>-</span>}
-                numInputs={6}
+                numInputs={4}
                 renderInput={(props) => <input {...props} />}
               />
               <p className="error-text" style={{ paddingTop: '10px' }}>{otpError}</p>
@@ -123,7 +123,7 @@ function SignInForm() {
               fullWidth
               onClick={handleVerifyOTP}
             >
-              Varify Otp <FontAwesomeIcon icon={faArrowRight} />
+              Verify Otp <FontAwesomeIcon icon={faArrowRight} />
             </Button>
           </>
           :

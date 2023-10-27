@@ -170,7 +170,7 @@ const Patients = () => {
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => { navigate("/patient-history") }}
+                          onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}
                         >
                           <img src={viewIcon} alt="edit" />
                         </IconButton>

@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DownloadForwordIcon from '../assets/images/document-forward.png';
 import CalenderIcon from '../assets/images/calender.svg';
 import { Button, Typography, Grid } from "@mui/material";
+import axios from '../apis/axiosConfig';
+import { useParams } from 'react-router-dom';
 
 const PatientHistory = () => {
+    const params = useParams();
+    const [consultationData, setConsultationData] = useState(null);
+    const [patientData, setPatientData] = useState(null);
+    const [appointmentData, setappointmentData] = useState(null);
+    useEffect(()=>{
+        axios.get(axios.defaults.baseURL+'/doctor/patient_detailed?user_id='+params.user_id+'&patient_id='+params.patient_id).then((patientData)=>{
+            console.log(patientData.data);
+            setConsultationData(patientData.data.consultation_data);
+            setPatientData(patientData.data.patient_data);
+            setappointmentData(patientData.data.appointments_data);
+        });
+    },[]);
     return (
         <div className='patient-detail-page'>
             <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Patient history </Typography>
@@ -13,25 +27,25 @@ const PatientHistory = () => {
                     <div className='custom-card' style={{height:'100%', marginBottom:'0'}}>
                         <div className='head-wrap'>
                             <h5>Patient Information</h5>
-                            <span>ID #345345435</span>
+                            <span>ID #{patientData.patient_id}</span>
                         </div>
 
                         <ul>
                             <li>
                                 <span>Full Name</span>
-                                <p>: Andrew Ainsley</p>
+                                <p>: {patientData.name}</p>
                             </li>
                             <li>
                                 <span>Phone</span>
-                                <p>: 9899772734</p>
+                                <p>: {patientData.phone}</p>
                             </li>
                             <li>
                                 <span>Email</span>
-                                <p>: Andrewainsley@gmail.com</p>
+                                <p>: {patientData.email}</p>
                             </li>
                             <li>
                                 <span>Age</span>
-                                <p>: 27 </p>
+                                <p>: {patientData.age} </p>
                             </li>
                         </ul>
 
@@ -47,15 +61,15 @@ const PatientHistory = () => {
                         <ul>
                             <li>
                                 <span>No of Appointment</span>
-                                <p>: 02</p>
+                                <p>: {appointmentData.no_of_appointment}</p>
                             </li>
                             <li>
                                 <span>Start date</span>
-                                <p>: December 22, 2022</p>
+                                <p>: {new Date(appointmentData.date_time).toLocaleDateString()}</p>
                             </li>
                             <li>
                                 <span>Start Time</span>
-                                <p>: 10:00 - 10:30 AM (30 minutes)</p>
+                                <p>: {new Date(appointmentData.date_time).toLocaleTimeString()} - {new Date(new Date(appointmentData.date_time).getTime() + 15 * 60000).toLocaleTimeString()}</p>
                             </li>
                         </ul>
 
@@ -65,43 +79,26 @@ const PatientHistory = () => {
 
             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Consultations  </Typography>
             <div style={{marginBottom:'20px'}}>
-                <div className='custom-card' style={{ paddingBottom: '0' }}>
+                {consultationData != null?consultationData.map((data)=>{
+                    return (<div className='custom-card' style={{ paddingBottom: '0' }}>
                     <div className='head-wrap'>
                         <h5>Prescriptions and Medical Advice</h5>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur. Vitae quis tortor orci nisl eu posuere sollicitudin. Porttitor viverra eu ac enim ultrices lacinia lacus integer diam. Sed ultricies velit id hendrerit arcu purus at maecenas. Vestibulum adipiscing tellus mauris eget maecenas. Laoreet ut suspendisse ut risus nunc iaculis. Dignissim pulvinar mi maecenas nisi dolor amet nunc quis sed. </p>
+                    <p>{data.prescription}</p>
 
                     <div className='bottom-bar'>
                         <img src={CalenderIcon} alt="Date" />
-                        <span> December 22, 2022 </span>
-                        <span style={{ borderRight: '0' }}>10:00 - 10:30 AM (30 minutes)</span>
-
-                        <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth>
-                            Send prescription <img src={DownloadForwordIcon} alt="Send Prescription" style={{ paddingLeft: '10px' }} />
-                        </Button>
+                        <span> {new Date(data.appointment.schedule_date).toDateString()}</span>
+                        <span style={{ borderRight: '0' }}>{new Date(data.appointment.schedule_date).toLocaleTimeString()} - {new Date(new Date(data.appointment.schedule_date).getTime() + 15 * 60000).toLocaleTimeString()}</span>
                     </div>
-                </div>
-                <div className='custom-card' style={{ paddingBottom: '0' }}>
-                    <div className='head-wrap'>
-                        <h5>Prescriptions and Medical Advice</h5>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur. Vitae quis tortor orci nisl eu posuere sollicitudin. Porttitor viverra eu ac enim ultrices lacinia lacus integer diam. Sed ultricies velit id hendrerit arcu purus at maecenas. Vestibulum adipiscing tellus mauris eget maecenas. Laoreet ut suspendisse ut risus nunc iaculis. Dignissim pulvinar mi maecenas nisi dolor amet nunc quis sed. </p>
-
-                    <div className='bottom-bar'>
-                        <img src={CalenderIcon} alt="Date" />
-                        <span> December 22, 2022 </span>
-                        <span style={{ borderRight: '0' }}>10:00 - 10:30 AM (30 minutes)</span>
-
-                        <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth>
-                            Send prescription <img src={DownloadForwordIcon} alt="Send Prescription" style={{ paddingLeft: '10px' }} />
-                        </Button>
-                    </div>
-                </div>
+                </div>)
+                }):''
+                }
             </div>
 
             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Additional Notes or Instructions </Typography>
             <div className='custom-card'>
-                Lorem ipsum dolor sit amet consectetur. Vitae quis tortor orci nisl eu posuere sollicitudin. Porttitor viverra eu ac enim ultrices lacinia lacus integer diam. Sed ultricies velit id hendrerit arcu purus at maecenas. Vestibulum adipiscing tellus mauris eget maecenas. Laoreet ut suspendisse ut risus nunc iaculis. Dignissim pulvinar mi maecenas nisi dolor amet nunc quis sed.
+                {patientData.additional_note}
             </div>
         </div>
     )

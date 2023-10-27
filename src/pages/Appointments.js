@@ -20,6 +20,7 @@ import NoAppointmentImg from '../assets/images/no-appointment.png';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useLocation } from 'react-router-dom';
+import axios from '../apis/axiosConfig';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,6 +61,13 @@ const Appointments = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [pendingData, setPendingData] = useState(null);
+  const [completedData, setCompletedData] = useState(null);
+  const [consultationData, setConsultationData] = useState(null);
+  const [rescheduledData, setRescheduledData] = useState(null);
+  const [noOfAppointments, setNoOfAppointments] = useState(null);
+  const [noAnswer, setNoAnswer] = useState(null);
+  const [consultationDate, setConsultationDate] = useState(null);
   const location = useLocation();
   const { state } = location;
   const loginSuccess = state && state.loginSuccess;
@@ -88,6 +96,33 @@ const Appointments = () => {
     }
   }, [loginSuccess]);
 
+  useEffect(() => {
+    if(consultationDate) {
+      axios.get(axios.defaults.baseURL+"/doctor/appointments?date="+consultationDate).then((data)=>{
+        setConsultationData(data.data.data);
+      });
+    }
+  },[consultationDate])
+  useEffect(() =>{
+    axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=pending").then(
+      (data) => {
+        setNoOfAppointments(data.data.display_data.number_of_appointments);
+        setPendingData(data.data.data);
+        setNoAnswer(data.data.display_data.unanswered_patient);
+      }
+    );
+    axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=completed").then(
+      (data) => {
+        setCompletedData(data.data.data);
+      }
+    );
+    axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=rescheduled").then(
+      (data) => {
+        setRescheduledData(data.data.data);
+      }
+    );
+  },[]);
+
   return (
     <div className='appointment-outer'>
       <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Appointment </Typography>
@@ -99,7 +134,7 @@ const Appointments = () => {
               <div className='card-box'>
                 <Typography variant='font14' sx={{ fontWeight: '600', color: '#425166' }} component="p">Number of Appointments</Typography>
                 <div className='count-img-wrap'>
-                  <Typography variant='font24' mt={1} mb={0} sx={{ color: '#4DA1FF', fontWeight: '700' }} component="h1">23</Typography>
+                  <Typography variant='font24' mt={1} mb={0} sx={{ color: '#4DA1FF', fontWeight: '700' }} component="h1">{noOfAppointments?noOfAppointments:'00'}</Typography>
                   <span className='icon-circle' style={{background:'#4596F3'}}><img src={HeartIcon} alt='Number of Appointments<' /></span>
                 </div>
               </div>
@@ -108,7 +143,7 @@ const Appointments = () => {
               <div className='card-box'>
                 <Typography variant='font14' sx={{ fontWeight: '600', color: '#425166' }} component="p">Patient who haven’t answered </Typography>
                 <div className='count-img-wrap'>
-                  <Typography variant='font24' mt={1} mb={0} sx={{ fontWeight: '700', color: '#FF6D4A' }} component="h1">03</Typography>
+                  <Typography variant='font24' mt={1} mb={0} sx={{ fontWeight: '700', color: '#FF6D4A' }} component="h1">{noAnswer!=null?noAnswer:'00'}</Typography>
                   <span className='icon-circle'><img src={PatientIcon} alt='Patient who haven’t answered ' style={{filter:'brightness(0) invert(1)'}} /></span>
                 </div>
               </div>
@@ -126,7 +161,7 @@ const Appointments = () => {
             <CustomTabPanel value={value} index={0}>
               <div className='head-wrap'>
                 <h2>Patient List</h2>
-                <Select
+                {/* <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={days}
@@ -138,140 +173,69 @@ const Appointments = () => {
                   <MenuItem value={1}>Today</MenuItem>
                   <MenuItem value={2}>Tomorrow</MenuItem>
                   <MenuItem value={3}>Yesterday</MenuItem>
-                </Select>
+                </Select> */}
               </div>
               <ul>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#078539' }}>Confirm</span></p>
+                {pendingData?pendingData.map((patient)=>{
+                  return (
+                    <li>
+                    <div>
+                      <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
+                      <div className='info-text'>
+                        <h4>{patient.patient.name}</h4>
+                        <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
+                      </div>
                     </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#2D0CF4' }}>pending</span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#F08200' }}>Rescheduled</span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
+                    <span className='time-wrap'>
+                      <img className='icon' src={TimeIcon} alt='Time' />
+                      {new Date(patient.schedule_date).toLocaleTimeString()}
+                    </span>
+                  </li>
+                  )
+                }):(<div className='no-data-wrap'>
+                <img src={NoAppointmentImg} alt="No Appointment" />
+                <p>You don’t have an appointment yet</p>
+                <span>You don’t have a doctor’s appointment scheduled a the moment</span>
+              </div>)
+                
+                }
               </ul>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <div className='no-data-wrap'>
+              <div className='head-wrap'>
+                  <h2>Patient List</h2>
+              </div>
+              <ul>
+            {completedData?completedData.map((patient)=>{
+                  return (
+                    <li>
+                    <div>
+                      <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
+                      <div className='info-text'>
+                        <h4>{patient.patient.name}</h4>
+                        <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
+                      </div>
+                    </div>
+                    <span className='time-wrap'>
+                      <img className='icon' src={TimeIcon} alt='Time' />
+                      {new Date(patient.schedule_date).toLocaleTimeString()}
+                    </span>
+                  </li>
+                  )
+                }):<div className='no-data-wrap'>
                 <img src={NoAppointmentImg} alt="No Appointment" />
                 <p>You don’t have an appointment yet</p>
                 <span>You don’t have a doctor’s appointment scheduled a the moment</span>
               </div>
+                
+                }
+
+              </ul>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
             <div className='head-wrap'>
                 <h2>Patient List</h2>
-                <Select
+                {/* <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={days}
@@ -283,62 +247,32 @@ const Appointments = () => {
                   <MenuItem value={1}>Today</MenuItem>
                   <MenuItem value={2}>Tomorrow</MenuItem>
                   <MenuItem value={3}>Yesterday</MenuItem>
-                </Select>
+                </Select> */}
               </div>
               <ul>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#078539' }}>Confirm</span></p>
+                {rescheduledData?rescheduledData.map((patient)=>{
+                  return (
+                    <li>
+                    <div>
+                      <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
+                      <div className='info-text'>
+                        <h4>{patient.patient.name}</h4>
+                        <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
+                      </div>
                     </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#2D0CF4' }}>pending</span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span><span style={{ color: '#F08200' }}>Rescheduled</span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
-
-                <li>
-                  <div>
-                    <span className='pat-circle-wrap'>SM</span>
-                    <div className='info-text'>
-                      <h4>Stacy Mitchell</h4>
-                      <p><span style={{ textDecoration: 'underline', cursor: 'pointer' }}>#2J983KT0</span> <span>First Appointment </span></p>
-                    </div>
-                  </div>
-                  <span className='time-wrap'>
-                    <img className='icon' src={TimeIcon} alt='Time' />
-                    9 : 15 AM
-                  </span>
-                </li>
+                    <span className='time-wrap'>
+                      <img className='icon' src={TimeIcon} alt='Time' />
+                      {new Date(patient.schedule_date).toLocaleTimeString()}
+                    </span>
+                  </li>
+                  )
+                }):(<div className='no-data-wrap'>
+                <img src={NoAppointmentImg} alt="No Appointment" />
+                <p>You don’t have an appointment yet</p>
+                <span>You don’t have a doctor’s appointment scheduled a the moment</span>
+              </div>)
+                
+                }
               </ul>
             </CustomTabPanel>
           </Box>
@@ -347,47 +281,52 @@ const Appointments = () => {
           <div className='custom-card calender-wrap'>
             <h2>Calendar</h2>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar />
+              <DateCalendar  onChange={(value)=>{setConsultationDate(new Date(value).getFullYear()+"-"+String(new Date(value).getMonth()+1).padStart(2, '0')+"-"+new Date(value).getDate())}} />
             </LocalizationProvider>
           </div>
 
           <div className='custom-card consult-wrap'>
             <h2>Consultation</h2>
-
-            <ul className='person-info'>
-              <li>
-                <div>
-                  <span className='pat-circle-wrap'>SM</span>
-                  <div className='info-text'>
-                    <h4>Denzel White</h4>
-                    <p><span>Male - 28 Years 3 Months</span></p>
-                  </div>
+            <div style={{height:'350px',overflow:'scroll'}}>  
+            { consultationData?consultationData.map((patient)=>{
+              return (<span>  
+                <ul className='person-info'>
+                  <li>
+                    <div>
+                      <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
+                      <div className='info-text'>
+                        <h4>{patient.patient.name}</h4>
+                        <p><span>{patient.patient.gender} - {patient.patient.dob}</span></p>
+                      </div>
+                    </div>
+                    {/* <span className='icon-wrap' style={{ cursor: 'pointer' }}>
+                      <img src={DropIcon} alt='Icon' />
+                    </span> */}
+                  </li>
+                </ul>
+                <div className='consult-detail'>
+                  <ul>
+                    <li>
+                      <span> Last meeting </span>
+                      <p>Dr Everly on 21 june 2023 Prescription <span style={{ color: '#1A71FF', cursor: 'pointer' }}>#2J983KT0 </span> </p>
+                    </li>
+                    <li>
+                      <span> Observation </span>
+                      <p>Lorem ipsum dolor sit amet consectetur. Sit id vitae purus platea tristique. Facilisis</p>
+                    </li>{patient.patient.treatment_undergoing?
+                    <li>
+                      <span> Prescription </span>
+                      <p>{patient.patient.treatment_undergoing_text} </p>
+                    </li>:''}
+                  </ul>
                 </div>
-                <span className='icon-wrap' style={{ cursor: 'pointer' }}>
-                  <img src={DropIcon} alt='Icon' />
-                </span>
-              </li>
-            </ul>
-
-            <div className='consult-detail'>
-              <ul>
-                <li>
-                  <span> Last meeting </span>
-                  <p>Dr Everly on 21 june 2023 Prescription <span style={{ color: '#1A71FF', cursor: 'pointer' }}>#2J983KT0 </span> </p>
-                </li>
-                <li>
-                  <span> Observation </span>
-                  <p>Lorem ipsum dolor sit amet consectetur. Sit id vitae purus platea tristique. Facilisis</p>
-                </li>
-                <li>
-                  <span> Prescription </span>
-                  <p> ac nulla neque proin id in. At integer eu mauris laoreet mauris quam nunc varius  </p>
-                </li>
-              </ul>
+                <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth>
+                  <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
+                </Button>
+              </span>)
+            }):''
+            }
             </div>
-            <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth>
-              <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
-            </Button>
           </div>
         </Grid>
       </Grid>
