@@ -16,6 +16,7 @@ const Patients = React.lazy(() => import('./pages/Patients'));
 const Notifications = React.lazy(() => import('./pages/Notifications'));
 const PatientHistory = React.lazy(() => import('./components/PatientHistory'));
 const DoctorProfile = React.lazy(() => import('./pages/DoctorProfile'));
+const Meeting = React.lazy(() => import('./pages/Meeting'));
 const theme = createTheme({
   typography: {
     fontFamily: "Nunito, sans-serif",
@@ -78,8 +79,9 @@ function App() {
                 <Route path="/appointments" element={<Appointments />} />
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/notifications" element={<Notifications />} />
-                <Route path="/patient-history" element={<PatientHistory/>} />
+                <Route path="/patient-history/:patient_id/:user_id" element={<PatientHistory/>} />
                 <Route path="/profile" element={<DoctorProfile />} />
+                <Route path="/meeting/:room_name" element={<Meeting />} />
                 </Route>
               </Route>
             </Routes>
