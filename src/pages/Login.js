@@ -75,6 +75,8 @@ function SignInForm() {
       if (response?.data?.status) {
         const token = response.data.access_token;
         const name = response.data.first_name;
+        localStorage.setItem('image', response.data.profile_image);
+        localStorage.setItem('type', response.data.user_type);
         localStorage.setItem('name', name);
         localStorage.setItem("token", token);
       }
@@ -114,8 +116,13 @@ function SignInForm() {
                 renderInput={(props) => <input {...props} />}
               />
               <p className="error-text" style={{ paddingTop: '10px' }}>{otpError}</p>
+            <Button
+              variant="contained"
+              onClick={handleSendOtp}
+            >
+              Re-send OTP
+            </Button>
             </div>
-
             <Button
               className="buttonPrimary big"
               variant="contained"
@@ -123,7 +130,7 @@ function SignInForm() {
               fullWidth
               onClick={handleVerifyOTP}
             >
-              Verify Otp <FontAwesomeIcon icon={faArrowRight} />
+              Verify OTP <FontAwesomeIcon icon={faArrowRight} />
             </Button>
           </>
           :
@@ -154,7 +161,7 @@ function SignInForm() {
               fullWidth
               onClick={handleSendOtp}
             >
-              Send Otp <FontAwesomeIcon icon={faArrowRight} />
+              Send OTP <FontAwesomeIcon icon={faArrowRight} />
             </Button>
           </>
         }
