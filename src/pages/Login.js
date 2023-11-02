@@ -116,12 +116,11 @@ function SignInForm() {
                 renderInput={(props) => <input {...props} />}
               />
               <p className="error-text" style={{ paddingTop: '10px' }}>{otpError}</p>
-            <Button
-              variant="contained"
+            <span className="resend-otp"
               onClick={handleSendOtp}
             >
-              Re-send OTP
-            </Button>
+              Resend OTP
+            </span>
             </div>
             <Button
               className="buttonPrimary big"

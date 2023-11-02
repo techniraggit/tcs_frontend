@@ -6,6 +6,18 @@
     height: 100vh;
 }
 
+span.resend-otp {
+    text-decoration: underline;
+    color: #4596F3;
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    text-align: right;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
 .head-wrap {
     display: flex;
     align-items: center;
@@ -1136,18 +1148,22 @@ span.hint-text {
     }
 
     .item-wrap {
+        padding-right: 10px;
+        
         h6 {
             font-size: 12px;
             color: #5B5B5B;
             font-weight: 400;
             margin-bottom: 8px;
             text-transform: capitalize;
+            word-wrap: break-word;
         }
 
         p {
             font-size: 14px;
             color: #5B5B5B;
             font-weight: 600;
+            word-wrap: break-word;
         }
     }
 
