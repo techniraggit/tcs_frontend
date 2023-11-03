@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "../apis/axiosConfig";
 import { useParams } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
@@ -75,9 +76,6 @@ const Meeting = () => {
     event.preventDefault();
     // hide the join form
     document.getElementById("room-name-form").style.display = "flex";
-    if (localStorage.getItem('type')=== "doctor") {
-      document.getElementById("noteSection").style.display = "block";
-    }
     const response = await axios.get(
       axios.defaults.baseURL +
       "/doctor/create_video_room?room_name=" +
@@ -150,24 +148,28 @@ const Meeting = () => {
   };
 
   return (
-    <div>
-      <form id="room-name-form">
+    <div style={{'textAlign':'center'}}>
+      {!globalRoom?
+      (<form id="room-name-form">
         <Button
+          style={{"position":"absolute","top":"50%","transform":"scale(1.5)"}}
           type="submit"
           onClick={(e) => {
             startRoom(e);
+            e.currentTarget.style.display = 'none';
           }}
           color="primary"
           variant="contained"
         >
           Join Room
         </Button>
-      </form>
+        <span style={{"position":"absolute","top":"60%","left":"42%"}}>Click on above button to Connect with Patient</span>
+      </form>):''}
       <div className="videoSection">
         <div id="video-container" className="video-outer" style={styles.video}></div>
 
-        {localStorage.getItem('type') === "doctor" ? (
-          <div id="noteSection" style={{ display: "none" }}>
+        {localStorage.getItem('type') === "doctor" && globalRoom? (
+          <div id="noteSection" >
             <ReactQuill
               style={{ width: "100%" }}
               theme="snow"
@@ -180,8 +182,8 @@ const Meeting = () => {
         )}
 
       </div>
-
-      <div className="btn-group-wrap">
+          {globalRoom?
+      (<div className="btn-group-wrap">
           <Button type="button" onClick={()=>{!muted?muteAudio():playAudio()}}>
             {!muted?<FontAwesomeIcon icon={faMicrophone} />:<FontAwesomeIcon icon={faMicrophoneSlash} />}
           </Button>
@@ -201,7 +203,7 @@ const Meeting = () => {
           >
             <FontAwesomeIcon icon={faPhoneSlash} />
           </Button>
-      </div>
+      </div>):''}
     </div>
   );
 };
