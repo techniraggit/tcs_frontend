@@ -19,7 +19,7 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import NoAppointmentImg from '../assets/images/no-appointment.png';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../apis/axiosConfig';
 
 function CustomTabPanel(props) {
@@ -61,17 +61,17 @@ const Appointments = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [pendingData, setPendingData] = useState(null);
-  const [completedData, setCompletedData] = useState(null);
-  const [consultationData, setConsultationData] = useState(null);
-  const [rescheduledData, setRescheduledData] = useState(null);
+  const [pendingData, setPendingData] = useState([]);
+  const [completedData, setCompletedData] = useState([]);
+  const [consultationData, setConsultationData] = useState([]);
+  const [rescheduledData, setRescheduledData] = useState([]);
   const [noOfAppointments, setNoOfAppointments] = useState(null);
   const [noAnswer, setNoAnswer] = useState(null);
   const [consultationDate, setConsultationDate] = useState(null);
   const location = useLocation();
   const { state } = location;
   const loginSuccess = state && state.loginSuccess;
-
+  const navigate = useNavigate();
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -176,7 +176,7 @@ const Appointments = () => {
                 </Select> */}
               </div>
               <ul>
-                {pendingData?pendingData.map((patient)=>{
+                {pendingData.length !=0?pendingData.map((patient)=>{
                   return (
                     <li>
                     <div>
@@ -206,7 +206,7 @@ const Appointments = () => {
                   <h2>Patient List</h2>
               </div>
               <ul>
-            {completedData?completedData.map((patient)=>{
+            {completedData.length != 0?completedData.map((patient)=>{
                   return (
                     <li>
                     <div>
@@ -250,7 +250,7 @@ const Appointments = () => {
                 </Select> */}
               </div>
               <ul>
-                {rescheduledData?rescheduledData.map((patient)=>{
+                {rescheduledData.length != 0?rescheduledData.map((patient)=>{
                   return (
                     <li>
                     <div>
@@ -299,9 +299,6 @@ const Appointments = () => {
                         <p><span>{patient.patient.gender} - {patient.patient.dob}</span></p>
                       </div>
                     </div>
-                    {/* <span className='icon-wrap' style={{ cursor: 'pointer' }}>
-                      <img src={DropIcon} alt='Icon' />
-                    </span> */}
                   </li>
                 </ul>
                 <div className='consult-detail'>
@@ -320,7 +317,7 @@ const Appointments = () => {
                     </li>:''}
                   </ul>
                 </div>
-                <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth>
+                <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
                   <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
                 </Button>
               </span>)

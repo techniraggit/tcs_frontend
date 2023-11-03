@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "../apis/axiosConfig";
 import { useParams } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +20,6 @@ const Meeting = () => {
     },
   };
   const params = useParams();
-  const { user_type } = jwtDecode(localStorage.getItem("token"));
   const [notepad, setNotepad] = useState("");
   const [globalRoom, setGlobalRoom] = useState();
   const [muted, setMuted] = useState(false);
@@ -77,7 +75,7 @@ const Meeting = () => {
     event.preventDefault();
     // hide the join form
     document.getElementById("room-name-form").style.display = "flex";
-    if (user_type === "doctor") {
+    if (localStorage.getItem('type')=== "doctor") {
       document.getElementById("noteSection").style.display = "block";
     }
     const response = await axios.get(
@@ -168,7 +166,7 @@ const Meeting = () => {
       <div className="videoSection">
         <div id="video-container" className="video-outer" style={styles.video}></div>
 
-        {user_type === "doctor" ? (
+        {localStorage.getItem('type') === "doctor" ? (
           <div id="noteSection" style={{ display: "none" }}>
             <ReactQuill
               style={{ width: "100%" }}

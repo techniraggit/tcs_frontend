@@ -128,7 +128,7 @@ const Notifications = () => {
                   <TableCell style={{cursor:'pointer', textDecoration:'underline'}}> {row.id} </TableCell>
                   <TableCell>{row.title}</TableCell>
                   <TableCell>{row.message}</TableCell>
-                  <TableCell>{new Date(row.created).toLocaleTimeString()}</TableCell>
+                  <TableCell>{new Date(row.created).toLocaleDateString()} {new Date(row.created).toLocaleTimeString()}</TableCell>
                 </TableRow>
               )):''}
             </TableBody>

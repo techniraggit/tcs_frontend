@@ -132,7 +132,7 @@ const Patients = () => {
         </Grid>
         <TableContainer className="customTable">
           {patientList && patientList.length > 0 ?
-            <Table stickyHeader aria-label="sticky table">
+            (<Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
@@ -180,13 +180,13 @@ const Patients = () => {
                 ))}
               </TableBody>
 
-            </Table>
+            </Table>)
             :
-            <div className="no-data-wrap">
+            (<div className="no-data-wrap">
               <img src={NoDataImg} alt="No Doctor" />
               <h5 className="mt-0">No appointment scheduled yet!</h5>
               <p>Lorem ipsum dolor sit amet consectetur.</p>
-            </div>
+            </div>)
 
           }
         </TableContainer>
