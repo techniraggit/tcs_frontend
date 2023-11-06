@@ -99,12 +99,13 @@ const Appointments = () => {
   useEffect(() => {
     if(consultationDate) {
       axios.get(axios.defaults.baseURL+"/doctor/appointments?date="+consultationDate).then((data)=>{
+        //console.log('consultaion data', data.data.data);
         setConsultationData(data.data.data);
       });
     }
   },[consultationDate])
   useEffect(() =>{
-    axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=pending").then(
+    axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=scheduled").then(
       (data) => {
         setNoOfAppointments(data.data.display_data.number_of_appointments);
         setPendingData(data.data.data);
@@ -288,7 +289,7 @@ const Appointments = () => {
           <div className='custom-card consult-wrap'>
             <h2>Consultation</h2>
             <div style={{height:'350px',overflow:'scroll'}}>  
-            { consultationData?consultationData.map((patient)=>{
+            { consultationData.length != 0?(consultationData.map((patient)=>{
               return (<span>  
                 <ul className='person-info'>
                   <li>
@@ -321,7 +322,7 @@ const Appointments = () => {
                   <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
                 </Button>
               </span>)
-            }):''
+            })):('No Consultaion for the selected Date')
             }
             </div>
           </div>
