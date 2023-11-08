@@ -153,20 +153,20 @@ const Patients = () => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell> {data.patient.patient_id} </TableCell>
-                    <TableCell>{data.patient.name}</TableCell>
+                    <TableCell><span onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}>{data.patient.name}</span></TableCell>
                     <TableCell>{data.patient.phone}</TableCell>
                     <TableCell>{data.patient.age}</TableCell>
                     <TableCell>{data.patient.email}</TableCell>
                     <TableCell>{formatDate(data.patient.created)}</TableCell>
                     <TableCell>
                       <div className="action-wrap">
-                        <IconButton
+                        {/* <IconButton
                           aria-label="view"
                           size="small"
                           onClick={handleDeleteOpen}
                         >
                           <img src={trashIcon} alt="delete" />
-                        </IconButton>
+                        </IconButton> */}
                         <IconButton
                           aria-label="edit"
                           size="small"

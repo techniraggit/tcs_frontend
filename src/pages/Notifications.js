@@ -47,10 +47,13 @@ function createData(id, subject, description, date, action) {
 
 const Notifications = () => {
   const [rows, setRows] = useState(null);
+  const [Filteredrows, setFilteredRows] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   useEffect(()=>{
     axios.get(axios.defaults.baseURL+'/doctor/notifications').then((data)=>{
       console.log(data.data.notifications);
       setRows(data.data.notifications);
+      setFilteredRows(data.data.notifications);
     });
   },[]);
   const [page, setPage] = React.useState(0);
@@ -71,6 +74,9 @@ const Notifications = () => {
   const handleDeleteClose = () => {
     setDeleteDialog(false);
   };
+  const handleChange = (txt) =>{
+    setFilteredRows(Filteredrows.filter(value=>value.title.includes(txt)));
+  }
 
   return (
     <div>
@@ -95,8 +101,11 @@ const Notifications = () => {
               <InputBase
                 placeholder="Search..."
                 inputProps={{ "aria-label": "Search..." }}
-              // value={searchQuery}
-              // onChange={handleChange}
+              value={searchQuery}
+              onChange={(e)=>{
+                setSearchQuery(e.target.value);
+                handleChange(e.target.value);
+              }}
               />
             </Paper>
             {/* <IconButton type="button" className='fillterButton'>
@@ -120,12 +129,12 @@ const Notifications = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows?rows.map((row) => (
+              {Filteredrows?Filteredrows.map((row,index) => (
                 <TableRow
                   key={row.name}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell style={{cursor:'pointer', textDecoration:'underline'}}> {row.id} </TableCell>
+                  <TableCell style={{cursor:'pointer', textDecoration:'underline'}}> {index+1} </TableCell>
                   <TableCell>{row.title}</TableCell>
                   <TableCell>{row.message}</TableCell>
                   <TableCell>{new Date(row.created).toLocaleDateString()} {new Date(row.created).toLocaleTimeString()}</TableCell>
@@ -140,7 +149,7 @@ const Notifications = () => {
         className="customTablePagination"
         rowsPerPageOptions={[14, 28, 50]}
         component="div"
-        count={rows?rows.length:1}
+        count={Filteredrows?Filteredrows.length:1}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

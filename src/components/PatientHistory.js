@@ -21,31 +21,30 @@ const PatientHistory = () => {
     return (
         <div className='patient-detail-page'>
             <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Patient history </Typography>
-
             <Grid container spacing={3}>
                 <Grid item xs={12} md={6} mb={4}>
                     <div className='custom-card' style={{height:'100%', marginBottom:'0'}}>
                         <div className='head-wrap'>
                             <h5>Patient Information</h5>
-                            <span>ID #{patientData.patient_id}</span>
+                            <span>ID #{patientData?.patient_id}</span>
                         </div>
 
                         <ul>
                             <li>
                                 <span>Full Name</span>
-                                <p>: {patientData.name}</p>
+                                <p>: {patientData?.name}</p>
                             </li>
                             <li>
                                 <span>Phone</span>
-                                <p>: {patientData.phone}</p>
+                                <p>: {patientData?.phone}</p>
                             </li>
                             <li>
                                 <span>Email</span>
-                                <p>: {patientData.email}</p>
+                                <p>: {patientData?.email}</p>
                             </li>
                             <li>
                                 <span>Age</span>
-                                <p>: {patientData.age} </p>
+                                <p>: {patientData?.age} </p>
                             </li>
                         </ul>
 
@@ -57,22 +56,22 @@ const PatientHistory = () => {
                         <div className='head-wrap'>
                             <h5>Appointment history</h5>
                         </div>
-
+                        {appointmentData?
                         <ul>
                             <li>
                                 <span>No of Appointment</span>
-                                <p>: {appointmentData.no_of_appointment}</p>
+                                <p>: {appointmentData?.no_of_appointment}</p>
                             </li>
                             <li>
                                 <span>Start date</span>
-                                <p>: {new Date(appointmentData.date_time).toLocaleDateString()}</p>
+                                <p>: {new Date(appointmentData?.date_time).toLocaleDateString()}</p>
                             </li>
                             <li>
                                 <span>Start Time</span>
-                                <p>: {new Date(appointmentData.date_time).toLocaleTimeString()} - {new Date(new Date(appointmentData.date_time).getTime() + 15 * 60000).toLocaleTimeString()}</p>
+                                <p>: {new Date(appointmentData?.date_time).toLocaleTimeString()} - {new Date(new Date(appointmentData.date_time).getTime() + 15 * 60000).toLocaleTimeString()}</p>
                             </li>
                         </ul>
-
+                        :''}
                     </div>
                 </Grid>
             </Grid>
@@ -98,7 +97,7 @@ const PatientHistory = () => {
 
             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Additional Notes or Instructions </Typography>
             <div className='custom-card'>
-                {patientData.additional_note}
+                {patientData?.additional_note}
             </div>
         </div>
     )

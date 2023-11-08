@@ -99,7 +99,7 @@ const Appointments = () => {
   useEffect(() => {
     if(consultationDate) {
       axios.get(axios.defaults.baseURL+"/doctor/appointments?date="+consultationDate).then((data)=>{
-        //console.log('consultaion data', data.data.data);
+        // console.log('consultaion data', data.data.data);
         setConsultationData(data.data.data);
       });
     }
@@ -304,14 +304,12 @@ const Appointments = () => {
                 </ul>
                 <div className='consult-detail'>
                   <ul>
+                    {patient.schedule_date?
                     <li>
-                      <span> Last meeting </span>
-                      <p>Dr Everly on 21 june 2023 Prescription <span style={{ color: '#1A71FF', cursor: 'pointer' }}>#2J983KT0 </span> </p>
-                    </li>
-                    <li>
-                      <span> Observation </span>
-                      <p>Lorem ipsum dolor sit amet consectetur. Sit id vitae purus platea tristique. Facilisis</p>
-                    </li>{patient.patient.treatment_undergoing?
+                      <span> Meeting time </span>
+                      <p>{new Date(patient.schedule_date).toLocaleTimeString()}</p>
+                    </li>:''}
+                   {patient.patient.treatment_undergoing?
                     <li>
                       <span> Prescription </span>
                       <p>{patient.patient.treatment_undergoing_text} </p>
