@@ -12,6 +12,7 @@ import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
 import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from 'react-router-dom';
 
 const Meeting = () => {
   const styles = {
@@ -21,6 +22,7 @@ const Meeting = () => {
     },
   };
   const params = useParams();
+  const navigate = useNavigate();
   const [notepad, setNotepad] = useState("");
   const [globalRoom, setGlobalRoom] = useState();
   const [muted, setMuted] = useState(false);
@@ -67,7 +69,7 @@ const Meeting = () => {
     };
     await fetch(axios.defaults.baseURL + "/doctor/consult", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then((result) => {console.log(result);navigate('/appointments');})
       .catch(error => console.log('error', error));
     globalRoom.disconnect();
   };

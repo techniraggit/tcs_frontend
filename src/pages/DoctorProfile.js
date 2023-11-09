@@ -53,7 +53,7 @@ const DoctorProfile = () => {
               <Grid container pb={2}>
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Clinic Name</h6>
-                  <p>Visicare</p>
+                  <p>{doctor.clinic_name}</p>
                 </Grid>
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Clinic  Address </h6>
@@ -62,6 +62,18 @@ const DoctorProfile = () => {
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Clinic Detail</h6>
                   <p>{doctor.clinic_contact_no}</p>
+                </Grid>
+                <Grid item xs={12} md={4} className="item-wrap">
+                  <h6>Working Days</h6>
+                  <p>{doctor.doctor_availability[0].working_days.join(',')}</p>
+                </Grid>
+                <Grid item xs={12} md={4} className="item-wrap">
+                  <h6>Working From</h6>
+                  <p>{doctor.doctor_availability[0].start_working_hr}</p>
+                </Grid>
+                <Grid item xs={12} md={4} className="item-wrap">
+                  <h6>Working To</h6>
+                  <p>{doctor.doctor_availability[0].end_working_hr}</p>
                 </Grid>
 
               </Grid>
