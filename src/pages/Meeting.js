@@ -13,6 +13,7 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
+import "./meeting.css";
 
 const Meeting = () => {
   const styles = {
