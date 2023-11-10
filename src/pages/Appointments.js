@@ -108,6 +108,7 @@ const Appointments = () => {
     axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=scheduled").then(
       (data) => {
         setNoOfAppointments(data.data.display_data.number_of_appointments);
+        console.log(data.data.data);
         setPendingData(data.data.data);
         setNoAnswer(data.data.display_data.unanswered_patient);
       }
@@ -191,6 +192,11 @@ const Appointments = () => {
                       <img className='icon' src={TimeIcon} alt='Time' />
                       {new Date(patient.schedule_date).toLocaleTimeString()}
                     </span>
+                    <div>
+                      <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
+                        <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
+                      </Button>
+                    </div>
                   </li>
                   )
                 }):(<div className='no-data-wrap'>
