@@ -83,7 +83,7 @@ const PatientHistory = () => {
                     <div className='head-wrap'>
                         <h5>Prescriptions and Medical Advice</h5>
                     </div>
-                    <p>{data.prescription}</p>
+                    <p>{data.prescription.replace( /(<([^>]+)>)/ig, '')}</p>
 
                     <div className='bottom-bar'>
                         <img src={CalenderIcon} alt="Date" />
