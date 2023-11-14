@@ -27,7 +27,7 @@ import DeleteDialog from "../components/DeleteDialog";
 import { getPatientLidting } from '../apis/doctorApi';
 
 const columns = [
-  { id: "id", label: "ID", minWidth: 40, },
+  { id: "id", label: "Sr.No.", minWidth: 40, },
   { id: "patientName", label: "Patient name", minWidth: 140 },
   { id: "mobileNo", label: "Mobile No.", minWidth: 40 },
   { id: "age", label: "Age", minWidth: 110 },
@@ -147,12 +147,12 @@ const Patients = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {patientList.map((data) => (
+                {patientList.map((data,index) => (
                   <TableRow
                     key={data.patient.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell> {data.patient.patient_id} </TableCell>
+                    <TableCell> {index+1} </TableCell>
                     <TableCell><span onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}>{data.patient.name}</span></TableCell>
                     <TableCell>{data.patient.phone}</TableCell>
                     <TableCell>{data.patient.age}</TableCell>

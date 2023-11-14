@@ -32,7 +32,7 @@ const DoctorProfile = () => {
         <Grid container spacing={2} pb={2}>
           <Grid item xs={12} md={4}>
             <div className="doc-profile">
-              <span><img src={doctor.user.profile_image?doctor.user.profile_image:DoctorImg} alt="Doctor" /></span>
+              <span><img src={`${axios.defaults.baseURL}${doctor.user.profile_image?doctor.user.profile_image:DoctorImg}`} alt="Doctor" /></span>
               <h4>Dr. {doctor.user.first_name} {doctor.user.last_name}</h4>
               <p>{doctor.specialization}</p>
             </div>
