@@ -96,7 +96,7 @@ const Meeting = () => {
     // handle cleanup when a participant disconnects
     room.on("participantDisconnected", handleDisconnectedParticipant);
 
-    setTimeout(()=>{
+   setTimeout(()=>{
       axios.get(axios.defaults.baseURL+"/doctor/validate_call_doctor?room_name="+params.room_name).then((value)=>{console.log(value)});
     },60000);
     window.addEventListener("pagehide", () => room.disconnect());
