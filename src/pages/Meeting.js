@@ -96,21 +96,8 @@ const Meeting = () => {
     // handle cleanup when a participant disconnects
     room.on("participantDisconnected", handleDisconnectedParticipant);
 
-    setTimeout(()=>{
-    //   let myHeaders3 = new Headers();
-    //   myHeaders3.append("Authorization", "Token QzECldEQkWZDHTzGa4V7uhCqshJRRHmcQlgWWvXkBkqMG");
-
-    //   let requestOptions3 = {
-    //     method: 'GET',
-    //     headers: myHeaders3,
-    //     redirect: 'follow'
-    //   };
-
-    //   fetch(axios.defaults.baseURL+"/doctor/validate_call_doctor?room_name="+globalRoom, requestOptions3)
-    //     .then(response => response.text())
-    //     .then(result => console.log(result))
-    //     .catch(error => console.log('error', error));
-      axios.get(axios.defaults.baseURL+"/doctor/validate_call_doctor?room_name="+globalRoom).then((value)=>{console.log(value)});
+   setTimeout(()=>{
+      axios.get(axios.defaults.baseURL+"/doctor/validate_call_doctor?room_name="+params.room_name).then((value)=>{console.log(value)});
     },60000);
     window.addEventListener("pagehide", () => room.disconnect());
     window.addEventListener("beforeunload", () => room.disconnect());
