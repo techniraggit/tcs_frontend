@@ -75,7 +75,10 @@ const Notifications = () => {
     setDeleteDialog(false);
   };
   const handleChange = (txt) =>{
-    setFilteredRows(Filteredrows.filter(value=>value.title.includes(txt)));
+    if(txt.length != 0)
+    {
+      setFilteredRows(rows.filter(value=>value.title.includes(txt)));
+    }
   }
 
   return (

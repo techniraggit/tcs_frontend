@@ -67,7 +67,7 @@ const Appointments = () => {
   const [rescheduledData, setRescheduledData] = useState([]);
   const [noOfAppointments, setNoOfAppointments] = useState(null);
   const [noAnswer, setNoAnswer] = useState(null);
-  const [consultationDate, setConsultationDate] = useState(null);
+  const [consultationDate, setConsultationDate] = useState(new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2, '0')+"-"+new Date().getDate());
   const location = useLocation();
   const { state } = location;
   const loginSuccess = state && state.loginSuccess;
@@ -99,7 +99,7 @@ const Appointments = () => {
   useEffect(() => {
     if(consultationDate) {
       axios.get(axios.defaults.baseURL+"/doctor/appointments?date="+consultationDate).then((data)=>{
-        // console.log('consultaion data', data.data.data);
+        console.log('consultaion data', data.data.data);
         setConsultationData(data.data.data);
       });
     }
@@ -120,6 +120,7 @@ const Appointments = () => {
     );
     axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=rescheduled").then(
       (data) => {
+        console.log(data.data.data);
         setRescheduledData(data.data.data);
       }
     );
