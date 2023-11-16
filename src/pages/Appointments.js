@@ -67,7 +67,7 @@ const Appointments = () => {
   const [rescheduledData, setRescheduledData] = useState([]);
   const [noOfAppointments, setNoOfAppointments] = useState(null);
   const [noAnswer, setNoAnswer] = useState(null);
-  const [consultationDate, setConsultationDate] = useState(null);
+  const [consultationDate, setConsultationDate] = useState(new Date().getFullYear()+"-"+String(new Date().getMonth()+1).padStart(2, '0')+"-"+new Date().getDate());
   const location = useLocation();
   const { state } = location;
   const loginSuccess = state && state.loginSuccess;
