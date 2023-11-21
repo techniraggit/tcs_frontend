@@ -273,6 +273,12 @@ const Appointments = () => {
                       <img className='icon' src={TimeIcon} alt='Time' />
                       {new Date(patient.schedule_date).toLocaleTimeString()}
                     </span>
+                    {patient.status != 'expired'?
+                    <div>
+                      <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
+                        <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
+                      </Button>
+                    </div>:''}
                   </li>
                   )
                 }):(<div className='no-data-wrap'>
