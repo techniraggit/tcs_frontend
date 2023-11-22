@@ -92,9 +92,19 @@
                 align-items: center;
                 justify-content: center;
 
-                img {
+                img, svg {
                     margin-right: 10px;
+                    @media only screen and (max-width: 1400px) {
+                        margin-right: 6px;
+                    }
                 }
+            }
+
+            span.time-wrap.start-call {
+                margin-left: 5px;
+                background: #4596F3;
+                color: #fff;
+                cursor: pointer;
             }
 
         }
@@ -159,6 +169,8 @@
 
         ul.person-info {
             margin-top: 30px;
+            padding: 0 5px;
+
             li {
                 display: flex;
                 align-items: center;
