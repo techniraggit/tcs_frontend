@@ -25,7 +25,15 @@ import Switch from '@mui/material/Switch';
 import NoDataImg from '../assets/images/no-data.png';
 import DeleteDialog from "../components/DeleteDialog";
 import { getPatientLidting } from '../apis/doctorApi';
-
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { saveAs } from 'file-saver';
+import { Link } from "react-router-dom";
+import Loader from "../components/Loader";
+import Filter from "../components/Filter";
 const columns = [
   { id: "id", label: "Sr.No.", minWidth: 40, },
   { id: "patientName", label: "Patient name", minWidth: 140 },
@@ -96,8 +104,25 @@ const Patients = () => {
     const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
     return date.toLocaleDateString(undefined, options);
   }
+  const [search, setSearch] = useState("");
+ 
+  const [value, setValue] = useState(0);
+  const [filteredListing, setFilteredListing] = useState([]);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [statusListing, setStatusListing] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedType, setSelectedType] = useState({});
+  const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
+  const filterData = (data) => {
+      // setFilteredListing(appointmentListing.filter((value) => {
+      //     return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
+      // }));
 
+  }
 
+  
+  console.log(searchQuery)
   return (
     <div>
       <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Patient </Typography>
@@ -110,24 +135,128 @@ const Patients = () => {
           className="tableFillterWrap"
         >
           <Grid item xs={6} md={6} sx={{ display: "flex" }}>
-            <Paper component="form" className="headerSearchWrap">
-              <IconButton
-                type="button"
-                sx={{ p: "0px", fontSize: "18px", color: "#2B7DCD" }}
-                aria-label="search"
-              >
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-              </IconButton>
-              <InputBase
-                placeholder="Search..."
-                inputProps={{ "aria-label": "Search..." }}
-              // value={searchQuery}
-              // onChange={handleChange}
-              />
+          <Filter
+            search={true}
+            searchQuery={searchQuery}
+            date={true}
+            download={false}
+            setSearch={setSearch}
+            setSearchQuery={setSearchQuery}
+            // filterData={filterData}
+            fromDate={fromDate}
+            setFromDate={setFromDate}
+            toDate={toDate}
+            setToDate={setToDate}
+          />
+
+          <Paper className="tableMainWrap">
+
+
+                {/* <TableContainer className="customTable">
+                    {appointmentListing.length > 0 ?
+                        <Table stickyHeader aria-label="sticky table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {filteredListing
+                                    // .filter((doctor) =>
+                                    //     `${doctor.user.first_name} ${doctor.user.last_name}`
+                                    //         .toLowerCase()
+                                    //         .includes(searchQuery.toLowerCase())
+                                    // )
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((data, index) => (
+                                        <TableRow
+                                            key={data.id}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell> {page * rowsPerPage + index + 1} </TableCell>
+
+
+                                            <TableCell>
+
+
+                                                <Link to={`${data?.appointment_id}`} state={data}>
+                                                    {data.patient.name}
+                                                </Link>
+
+                                            </TableCell>
+                                            <TableCell>{new Date(data.schedule_date).toLocaleTimeString()} {new Date(data.schedule_date).toDateString()}</TableCell>
+                                            <TableCell>{data.doctor.user.first_name} {data.doctor.user.last_name}</TableCell>
+                                            <TableCell>{data.patient.email}</TableCell>
+                                            <TableCell>{data.patient.phone}</TableCell>
+                                            <TableCell>
+                                                <Select
+                                                    className="select-field status"
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={selectedType[data.appointment_id]}
+                                                    onChange={(event) => {
+                                                        handleTypeChange(event, data.appointment_id);
+                                                        handleSelectedTypeChange(data.appointment_id, event.target.value); // Call the callback to update selectedType
+                                                        // axios.put(axios.defaults.baseURL+"/admin/appointment-list",{"id":data.appointment_id,"status":event.target.value})
+                                                        var myHeaders = new Headers();
+                                                        myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
+                                                        myHeaders.append("Content-Type", "application/json");
+
+                                                        var raw = JSON.stringify({
+                                                            "id": data.appointment_id,
+                                                            "status": event.target.value
+                                                        });
+
+                                                        var requestOptions = {
+                                                            method: 'PUT',
+                                                            headers: myHeaders,
+                                                            body: raw,
+                                                            redirect: 'follow'
+                                                        };
+
+                                                        fetch(axios.defaults.baseURL + "admin/appointment-list", requestOptions)
+                                                            .then(response => response.text())
+                                                            .then(result => console.log(result))
+                                                            .catch(error => console.log('error', error));
+                                                    }}
+                                                    name="status"
+                                                    fullWidth
+                                                >
+                                                    {selectedType[data.appointment_id] && (
+                                                        <MenuItem value={selectedType[data.appointment_id]}>
+                                                            {selectedType[data.appointment_id]}
+                                                        </MenuItem>
+                                                    )}
+                                                    <MenuItem value="Reschedule" onClick={() => {
+                                                        handleOpenRescheduleDialog(data.appointment_id);
+                                                        logSelectedType();
+                                                    }}>
+                                                        Reschedule
+                                                    </MenuItem>
+                                                    <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.appointment_id)}>Cancel</MenuItem>
+                                                </Select>
+
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                        :
+                      <Loader />
+                    }
+                </TableContainer> */}
             </Paper>
-            {/* <IconButton type="button" className='fillterButton'>
-              <img src={fillter} alt="filter" />
-            </IconButton> */}
+            <IconButton type="button" className='fillterButton'>
+              {/* <img src={fillter} alt="filter" /> */}
+            </IconButton>
           </Grid>
         </Grid>
         <TableContainer className="customTable">
