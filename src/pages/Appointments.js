@@ -21,6 +21,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../apis/axiosConfig';
+import moment from "moment"
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -304,7 +305,7 @@ const Appointments = () => {
             <h2>Consultation</h2>
             <div style={{height:'350px', overflowY:'auto'}}>  
             { consultationData.length != 0?(consultationData.map((patient)=>{
-              console.log(patient?.status);
+              console.log(patient);
               return (<span>  
                 <ul className='person-info'>
                   <li>
@@ -319,15 +320,15 @@ const Appointments = () => {
                 </ul>
                 <div className='consult-detail'>
                   <ul>
-                    {patient.schedule_date?
+                    {patient?.schedule_date?
                     <li>
                       <span> Meeting time </span>
-                      <p>{new Date(patient.schedule_date).toLocaleTimeString()}</p>
+                      <p>{moment(patient?.schedule_date).format("DD-MM-YYYY LT")}</p>
                     </li>:''}
-                   {patient.patient.treatment_undergoing?
+                   {patient?.patient?.treatment_undergoing?
                     <li>
                       <span> Prescription </span>
-                      <p>{patient.patient.treatment_undergoing_text} </p>
+                      <p>{patient?.patient?.treatment_undergoing_text} </p>
                     </li>:''}
                   </ul>
                 </div>

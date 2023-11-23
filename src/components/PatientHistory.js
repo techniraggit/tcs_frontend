@@ -88,11 +88,11 @@ const PatientHistory = () => {
                         <h5>Prescriptions and Medical Advice</h5>
                     </div>
                     <p>{data.prescription.replace( /(<([^>]+)>)/ig, '')}</p>
-                    {data.appointment.schedule_date?
+                    {data?.appointment?.schedule_date?
                     (<div className='bottom-bar'>
                         <img src={CalenderIcon} alt="Date" />
-                        <span> {new Date(data.appointment.schedule_date).toDateString()}</span>
-                        <span style={{ borderRight: '0' }}>{new Date(data.appointment.schedule_date).toLocaleTimeString()} - {new Date(new Date(data.appointment.schedule_date).getTime() + 15 * 60000).toLocaleTimeString()}</span>
+                        <span> {new Date(data?.appointment?.schedule_date).toDateString()}</span>
+                        <span style={{ borderRight: '0' }}>{new Date(data?.appointment?.schedule_date).toLocaleTimeString()} - {new Date(new Date(data.appointment.schedule_date).getTime() + 15 * 60000).toLocaleTimeString()}</span>
                     </div>)
                     :''}
                 </div>)
@@ -111,7 +111,7 @@ const PatientHistory = () => {
 
                             {
                                 appointmentDetail?.map((item, index) => {   
-                                    console.log(item?.treatment_undergoing)
+                                    // console.log(item?.treatment_undergoing)
                                     return (
                                         <>
 
@@ -119,8 +119,6 @@ const PatientHistory = () => {
                                                 <div className="card-body">
                                                     <h5 className="card-title">Additional Note</h5>
                                                     <p className="card-text">{item['additional_note']}</p>
-                                                    {/* <h5 className="card-title">Pre Health Issue :{item?.treatment_undergoing}</h5> */}
-                                                    {/* <p className="card-text"></p> */}
                                                 </div>
                                             </div>
 
