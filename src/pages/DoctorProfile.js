@@ -63,19 +63,21 @@ const DoctorProfile = () => {
                   <h6>Clinic Detail</h6>
                   <p>{doctor.clinic_contact_no}</p>
                 </Grid>
+                {doctor.doctor_availability[0]?
+                <>
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Working Days</h6>
-                  <p>{doctor.doctor_availability[0].working_days.join(',')}</p>
+                  {doctor.doctor_availability.map(value =><p>{value.working_days.join(',')}</p>)}
                 </Grid>
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Working From</h6>
-                  <p>{doctor.doctor_availability[0].start_working_hr}</p>
+                  {doctor.doctor_availability.map(value =><p>{value.start_working_hr}</p>)}
                 </Grid>
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Working To</h6>
-                  <p>{doctor.doctor_availability[0].end_working_hr}</p>
-                </Grid>
-
+                  {doctor.doctor_availability.map(value =><p>{value.end_working_hr}</p>)}
+                </Grid></>:''
+                }
               </Grid>
 
               <Typography
