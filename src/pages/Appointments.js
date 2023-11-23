@@ -189,16 +189,16 @@ const Appointments = () => {
                         <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
                       </div>
                     </div>
-                    <span className='time-wrap'>
+                   <div>
+                   <span className='time-wrap'>
                       <img className='icon' src={TimeIcon} alt='Time' />
                       {new Date(patient.schedule_date).toLocaleTimeString()}
                     </span>
                     {patient.status != 'expired'?
-                    <div>
-                      <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
-                        <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
-                      </Button>
-                    </div>:''}
+                      <span className='time-wrap start-call' onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
+                          <FontAwesomeIcon icon={faPhone} />  Start call
+                      </span> :''}
+                   </div>
                   </li>
                   )
                 }):(<div className='no-data-wrap'>
@@ -269,16 +269,16 @@ const Appointments = () => {
                         <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
                       </div>
                     </div>
-                    <span className='time-wrap'>
-                      <img className='icon' src={TimeIcon} alt='Time' />
-                      {new Date(patient.schedule_date).toLocaleTimeString()}
-                    </span>
-                    {patient.status != 'expired'?
                     <div>
-                      <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
-                        <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
-                      </Button>
-                    </div>:''}
+                      <span className='time-wrap'>
+                        <img className='icon' src={TimeIcon} alt='Time' />
+                        {new Date(patient.schedule_date).toLocaleTimeString()}
+                      </span>
+                      {patient.status != 'expired'?
+                      <span className='time-wrap start-call' onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
+                          <FontAwesomeIcon icon={faPhone} />  Start call
+                      </span>:''}
+                    </div>
                   </li>
                   )
                 }):(<div className='no-data-wrap'>
@@ -302,7 +302,7 @@ const Appointments = () => {
 
           <div className='custom-card consult-wrap'>
             <h2>Consultation</h2>
-            <div style={{height:'350px',overflow:'scroll'}}>  
+            <div style={{height:'350px', overflowY:'auto'}}>  
             { consultationData.length != 0?(consultationData.map((patient)=>{
               return (<span>  
                 <ul className='person-info'>
@@ -336,7 +336,10 @@ const Appointments = () => {
                 </Button>
                 :''}
               </span>)
-            })):('No Consultaion for the selected Date')
+            })):
+            (<div style={{textAlign:'center', marginTop:'20px'}}>
+              No Consultaion for the selected Date
+            </div>)
             }
             </div>
           </div>

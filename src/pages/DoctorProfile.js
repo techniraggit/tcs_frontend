@@ -65,7 +65,7 @@ const DoctorProfile = () => {
                 </Grid>
                 {doctor.doctor_availability[0]?
                 <>
-                (<Grid item xs={12} md={4} className="item-wrap">
+                <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Working Days</h6>
                   {doctor.doctor_availability.map(value =><p>{value.working_days.join(',')}</p>)}
                 </Grid>
@@ -76,7 +76,7 @@ const DoctorProfile = () => {
                 <Grid item xs={12} md={4} className="item-wrap">
                   <h6>Working To</h6>
                   {doctor.doctor_availability.map(value =><p>{value.end_working_hr}</p>)}
-                </Grid>)</>:''
+                </Grid></>:''
                 }
               </Grid>
 

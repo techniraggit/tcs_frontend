@@ -111,20 +111,36 @@ a:hover {
   }
 }
 
-/* @media (max-width: 1400px) {
-  .login-wrap .MuiGrid-item {
-    width: calc(100% - 540px);
-  }
-
-  .login-wrap .left-wrap {
-    width: 540px;
-  }
-
+@media only screen and (max-width: 1600px) {
   .body-wrapper .sidebar {
-    width: 250px;
+    width: 260px;
   }
 
   .body-wrapper .bodyWrap {
-    width: calc(100% - 250px);
+    width: calc(100% - 260px);
   }
-} */
+
+}
+
+
+@media only screen and (max-width: 1400px) {
+  .body-wrapper .sidebar {
+    width: 220px;
+  }
+
+  .body-wrapper .bodyWrap {
+    width: calc(100% - 220px);
+  }
+
+}
+
+@media only screen and (max-width: 1024px) {
+  .body-wrapper .sidebar {
+    width: 100%;
+  }
+
+  .body-wrapper .bodyWrap {
+    width: 100%;
+  }
+
+}
