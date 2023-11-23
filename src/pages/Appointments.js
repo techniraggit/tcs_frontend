@@ -304,6 +304,7 @@ const Appointments = () => {
             <h2>Consultation</h2>
             <div style={{height:'350px', overflowY:'auto'}}>  
             { consultationData.length != 0?(consultationData.map((patient)=>{
+              console.log(patient?.status);
               return (<span>  
                 <ul className='person-info'>
                   <li>
@@ -330,11 +331,11 @@ const Appointments = () => {
                     </li>:''}
                   </ul>
                 </div>
-                {patient.status != 'expired'?
+                {patient.status != 'expired' && patient?.status !="completed" ?
                 <Button className='buttonPrimary big' variant="contained" color="primary" fullWidth onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
                   <FontAwesomeIcon icon={faPhone} style={{ marginRight: '10px' }} />  Start call
                 </Button>
-                :''}
+                :<h4>Meeting {patient?.status}</h4>}
               </span>)
             })):
             (<div style={{textAlign:'center', marginTop:'20px'}}>
