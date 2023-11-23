@@ -84,12 +84,13 @@ const PatientHistory = () => {
                         <h5>Prescriptions and Medical Advice</h5>
                     </div>
                     <p>{data.prescription.replace( /(<([^>]+)>)/ig, '')}</p>
-
-                    <div className='bottom-bar'>
+                    {data.appointment.schedule_date?
+                    (<div className='bottom-bar'>
                         <img src={CalenderIcon} alt="Date" />
                         <span> {new Date(data.appointment.schedule_date).toDateString()}</span>
                         <span style={{ borderRight: '0' }}>{new Date(data.appointment.schedule_date).toLocaleTimeString()} - {new Date(new Date(data.appointment.schedule_date).getTime() + 15 * 60000).toLocaleTimeString()}</span>
-                    </div>
+                    </div>)
+                    :''}
                 </div>)
                 }):''
                 }
