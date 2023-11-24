@@ -111,13 +111,11 @@ const PatientHistory = () => {
 
                             {
                                 appointmentDetail?.map((item, index) => {   
-                                    // console.log(item?.treatment_undergoing)
                                     return (
                                         <>
 
                                             <div className="card" key={index} >
                                                 <div className="card-body">
-                                                    <h5 className="card-title">Additional Note</h5>
                                                     <p className="card-text">{item['additional_note']}</p>
                                                 </div>
                                             </div>
