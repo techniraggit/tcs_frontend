@@ -34,6 +34,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Filter from "../components/Filter";
+import moment from "moment";
 const columns = [
   { id: "id", label: "Sr.No.", minWidth: 40, },
   { id: "patientName", label: "Patient name", minWidth: 140 },
@@ -105,6 +106,10 @@ const Patients = () => {
     return date.toLocaleDateString(undefined, options);
   }
   const [search, setSearch] = useState("");
+  function dateformat(params) {
+    return moment(params).format('YYYY-MM-DD')
+    
+  }
  
   const [value, setValue] = useState(0);
   const [filteredListing, setFilteredListing] = useState([]);
@@ -114,12 +119,39 @@ const Patients = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState({});
   const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
-  const filterData = (data) => {
-      // setFilteredListing(appointmentListing.filter((value) => {
-      //     return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
-      // }));
+  console.log(fromDate,toDate,searchQuery);
+  const [data, setData] = useState(patientList);
+  console.log('data: ', data );
 
-  }
+
+  useEffect(() => {
+    const filteredData = patientList?.filter(item =>
+      item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
+      
+    );
+    // console.log('filteredData',filteredData);
+
+    if (toDate && fromDate) {
+      const filteredByDate = filteredData?.filter(item =>
+
+        console.log('form', dateformat(fromDate),dateformat(item?.patient?.created),dateformat(toDate))
+
+
+          // dateformat(item?.patient?.created) >=  dateformat(fromDate) && dateformat(item?.patient?.created) <= dateformat(toDate)
+      );
+      console.log(filteredByDate);
+      setData(filteredByDate);
+    } else {
+      setData(filteredData);
+    }
+  }, [fromDate,toDate,searchQuery])
+  
+  // const filterData = (data) => {
+  //     // setFilteredListing(appointmentListing.filter((value) => {
+  //     //     return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
+  //     // }));
+
+  // }
 
   
   console.log(searchQuery)
