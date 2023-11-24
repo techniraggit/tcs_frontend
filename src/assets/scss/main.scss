@@ -948,14 +948,12 @@ span.hint-text {
     align-items: center;
 
     .filter-wrap.custom-datepicker {
-        .MuiStack-root, .MuiStack-root > span {
             display: flex;
             align-items: center;
             flex-direction: row;
             margin: 0;
             padding: 0 5px;
             font-size: 13px;
-        }
 
         .MuiInputBase-root {
             border-radius: 0;
@@ -974,7 +972,19 @@ span.hint-text {
                 font-size: 16px;
             }
         }
+
+        .MuiFormControl-root.MuiTextField-root {
+            margin-right: 10px;
+        }
+        
+         label {
+            margin-top: -5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
     }
+ 
 }
     
 

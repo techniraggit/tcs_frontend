@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import DoctorImg from '../assets/images/dummy-doctor.svg';
 import axios from "../apis/axiosConfig";
+import DocterCard from "../components/DocterCard";
 
 const DoctorProfile = () => {
   const[doctor,setDoctor] = useState(null);
@@ -28,76 +29,9 @@ const DoctorProfile = () => {
       </Typography>
       <Paper className="customBoxWrap">
 
-        {doctor?(
-        <Grid container spacing={2} pb={2}>
-          <Grid item xs={12} md={4}>
-            <div className="doc-profile">
-              <span><img src={`${axios.defaults.baseURL}${doctor.user.profile_image?doctor.user.profile_image:DoctorImg}`} alt="Doctor" /></span>
-              <h4>Dr. {doctor.user.first_name} {doctor.user.last_name}</h4>
-              <p>{doctor.specialization}</p>
-            </div>
-
-            <Grid container pb={2}>
-              <Grid item xs={12} md={6} className="item-wrap">
-                <h6>Email</h6>
-                <p>{doctor.user.email}</p>
-              </Grid>
-              <Grid item xs={12} md={6} className="item-wrap">
-                <h6>Phone</h6>
-                <p>{doctor.user.phone_number}</p>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <div className="view-detail">
-              <Grid container pb={2}>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Clinic Name</h6>
-                  <p>{doctor.clinic_name}</p>
-                </Grid>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Clinic  Address </h6>
-                  <p>{doctor.clinic_address}</p>
-                </Grid>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Clinic Detail</h6>
-                  <p>{doctor.clinic_contact_no}</p>
-                </Grid>
-                {doctor.doctor_availability[0]?
-                <>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Working Days</h6>
-                  {doctor.doctor_availability.map(value =><p>{value.working_days.join(',')}</p>)}
-                </Grid>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Working From</h6>
-                  {doctor.doctor_availability.map(value =><p>{value.start_working_hr}</p>)}
-                </Grid>
-                <Grid item xs={12} md={4} className="item-wrap">
-                  <h6>Working To</h6>
-                  {doctor.doctor_availability.map(value =><p>{value.end_working_hr}</p>)}
-                </Grid></>:''
-                }
-              </Grid>
-
-              <Typography
-                mb={1}
-                sx={{ fontWeight: "600", fontSize: "16px", color: '#222B45' }}
-                component="h1"
-              >
-                About Doctor
-              </Typography>
-              <Typography
-                mb={3}
-                sx={{ fontWeight: "400", fontSize: "14px", color: '#6B779A' }}
-                component="p"
-              >
-                {doctor.summary}
-              </Typography>
-            </div>
-
-          </Grid>
-        </Grid>):''}
+        {doctor &&(
+          <DocterCard doctorDetails={doctor} />)}
+      
       </Paper>
     </div>
   )

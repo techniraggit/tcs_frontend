@@ -35,6 +35,7 @@ import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Filter from "../components/Filter";
 import moment from "moment";
+import PatientTableList from "../components/PatientTableList";
 const columns = [
   { id: "id", label: "Sr.No.", minWidth: 40, },
   { id: "patientName", label: "Patient name", minWidth: 140 },
@@ -89,6 +90,7 @@ const Patients = () => {
       .then((response) => {
         if ((response.data)) {
           setPatientList(response?.data?.data);
+          setData(response?.data?.data)
           console.log('patient-listing', response?.data?.data);
         } else {
           console.error("API response is not an array:", response.data);
@@ -106,11 +108,11 @@ const Patients = () => {
     return date.toLocaleDateString(undefined, options);
   }
   const [search, setSearch] = useState("");
-  function dateformat(params) {
-    return moment(params).format('YYYY-MM-DD')
-    
-  }
- 
+  // function dateformat(params) {
+  //   return moment(params).format('YYYY-MM-DD')
+
+  // }
+
   const [value, setValue] = useState(0);
   const [filteredListing, setFilteredListing] = useState([]);
   const [fromDate, setFromDate] = useState(null);
@@ -119,33 +121,46 @@ const Patients = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState({});
   const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
-  console.log(fromDate,toDate,searchQuery);
-  const [data, setData] = useState(patientList);
-  console.log('data: ', data );
+  // console.log(fromDate?.getTime(), toDate, searchQuery);
+  // console.log(new Date(fromDate).getTime());
+  // setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()+ 86400000));
+
+  const [data, setData] = useState([]);
+  function isEmpty(val) {
+    return (val === undefined || val == null || val.length <= 0) ? false : true;
+  }
+
+  useEffect(() => {
+    // const filteredData = patientList?.filter(item =>
+    //   item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
+
+    // );
+    // console.log('filteredData',filteredData);
+
+    if (searchQuery) {
+      setData(data?.filter(item => item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
+      ));
+    }
+    // setData(filteredData);
+
+  }, [searchQuery])
+
+
+
+
 
 
   useEffect(() => {
-    const filteredData = patientList?.filter(item =>
-      item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
-      
-    );
-    // console.log('filteredData',filteredData);
-
-    if (toDate && fromDate) {
-      const filteredByDate = filteredData?.filter(item =>
-
-        console.log('form', dateformat(fromDate),dateformat(item?.patient?.created),dateformat(toDate))
-
-
-          // dateformat(item?.patient?.created) >=  dateformat(fromDate) && dateformat(item?.patient?.created) <= dateformat(toDate)
-      );
-      console.log(filteredByDate);
-      setData(filteredByDate);
-    } else {
-      setData(filteredData);
+    // fromDate, toDate,
+    if (fromDate) {
+      setData(data?.filter(value => new Date(value?.patient?.name).getTime() >= new Date(fromDate).getTime()));
     }
-  }, [fromDate,toDate,searchQuery])
-  
+  }, [fromDate]);
+  useEffect(() => {
+    if (toDate) {
+      setData(data?.filter(value => new Date(value?.patient?.name).getTime() <= new Date(toDate).getTime() + 86400000));
+    }
+  }, [toDate]);
   // const filterData = (data) => {
   //     // setFilteredListing(appointmentListing.filter((value) => {
   //     //     return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
@@ -153,7 +168,7 @@ const Patients = () => {
 
   // }
 
-  
+
   console.log(searchQuery)
   return (
     <div>
@@ -163,193 +178,60 @@ const Patients = () => {
         <Grid
           container
           spacing={2}
-          sx={{ alignItems: "center" }}
+          sx={{ alignItems: "center", justifyContent: 'space-between' }}
           className="tableFillterWrap"
         >
           <Grid item xs={6} md={6} sx={{ display: "flex" }}>
-          <Filter
-            search={true}
-            searchQuery={searchQuery}
-            date={true}
-            download={false}
-            setSearch={setSearch}
-            setSearchQuery={setSearchQuery}
-            // filterData={filterData}
-            fromDate={fromDate}
-            setFromDate={setFromDate}
-            toDate={toDate}
-            setToDate={setToDate}
-          />
-
-          <Paper className="tableMainWrap">
-
-
-                {/* <TableContainer className="customTable">
-                    {appointmentListing.length > 0 ?
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            style={{ minWidth: column.minWidth }}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {filteredListing
-                                    // .filter((doctor) =>
-                                    //     `${doctor.user.first_name} ${doctor.user.last_name}`
-                                    //         .toLowerCase()
-                                    //         .includes(searchQuery.toLowerCase())
-                                    // )
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((data, index) => (
-                                        <TableRow
-                                            key={data.id}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell> {page * rowsPerPage + index + 1} </TableCell>
-
-
-                                            <TableCell>
-
-
-                                                <Link to={`${data?.appointment_id}`} state={data}>
-                                                    {data.patient.name}
-                                                </Link>
-
-                                            </TableCell>
-                                            <TableCell>{new Date(data.schedule_date).toLocaleTimeString()} {new Date(data.schedule_date).toDateString()}</TableCell>
-                                            <TableCell>{data.doctor.user.first_name} {data.doctor.user.last_name}</TableCell>
-                                            <TableCell>{data.patient.email}</TableCell>
-                                            <TableCell>{data.patient.phone}</TableCell>
-                                            <TableCell>
-                                                <Select
-                                                    className="select-field status"
-                                                    labelId="demo-simple-select-label"
-                                                    id="demo-simple-select"
-                                                    value={selectedType[data.appointment_id]}
-                                                    onChange={(event) => {
-                                                        handleTypeChange(event, data.appointment_id);
-                                                        handleSelectedTypeChange(data.appointment_id, event.target.value); // Call the callback to update selectedType
-                                                        // axios.put(axios.defaults.baseURL+"/admin/appointment-list",{"id":data.appointment_id,"status":event.target.value})
-                                                        var myHeaders = new Headers();
-                                                        myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
-                                                        myHeaders.append("Content-Type", "application/json");
-
-                                                        var raw = JSON.stringify({
-                                                            "id": data.appointment_id,
-                                                            "status": event.target.value
-                                                        });
-
-                                                        var requestOptions = {
-                                                            method: 'PUT',
-                                                            headers: myHeaders,
-                                                            body: raw,
-                                                            redirect: 'follow'
-                                                        };
-
-                                                        fetch(axios.defaults.baseURL + "admin/appointment-list", requestOptions)
-                                                            .then(response => response.text())
-                                                            .then(result => console.log(result))
-                                                            .catch(error => console.log('error', error));
-                                                    }}
-                                                    name="status"
-                                                    fullWidth
-                                                >
-                                                    {selectedType[data.appointment_id] && (
-                                                        <MenuItem value={selectedType[data.appointment_id]}>
-                                                            {selectedType[data.appointment_id]}
-                                                        </MenuItem>
-                                                    )}
-                                                    <MenuItem value="Reschedule" onClick={() => {
-                                                        handleOpenRescheduleDialog(data.appointment_id);
-                                                        logSelectedType();
-                                                    }}>
-                                                        Reschedule
-                                                    </MenuItem>
-                                                    <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.appointment_id)}>Cancel</MenuItem>
-                                                </Select>
-
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                            </TableBody>
-                        </Table>
-                        :
-                      <Loader />
-                    }
-                </TableContainer> */}
+            <Paper component="form" className="headerSearchWrap">
+              <IconButton
+                type="button"
+                sx={{ p: "0px", fontSize: "18px", color: "#2B7DCD" }}
+                aria-label="search"
+              >
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+              </IconButton>
+              <InputBase
+                placeholder="Search Patient..."
+                inputProps={{ "aria-label": "Search..." }}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  // props.filterData(e.target.value);
+                }}
+              />
             </Paper>
-            <IconButton type="button" className='fillterButton'>
-              {/* <img src={fillter} alt="filter" /> */}
-            </IconButton>
           </Grid>
+
+          <Grid item xs={6} md={6} sx={{ display: "flex", justifyContent: 'flex-end' }}>
+            <div class="filter-outer">
+              <div class="filter-wrap custom-datepicker">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
+                    label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
+                  <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
+                    label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
+                </LocalizationProvider>
+              </div>
+            </div>
+            <Button className="buttonPrimary small" type="button" style={{ color: '#fff' }}>
+              Reset Filter
+            </Button>
+          </Grid>
+
         </Grid>
         <TableContainer className="customTable">
-          {patientList && patientList.length > 0 ?
-            (<Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {patientList.map((data,index) => (
-                  <TableRow
-                    key={data.patient.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell> {index+1} </TableCell>
-                    <TableCell><span onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}>{data.patient.name}</span></TableCell>
-                    <TableCell>{data.patient.phone}</TableCell>
-                    <TableCell>{data.patient.age}</TableCell>
-                    <TableCell>{data.patient.email}</TableCell>
-                    <TableCell>{formatDate(data.patient.created)}</TableCell>
-                    <TableCell>
-                      <div className="action-wrap">
-                        {/* <IconButton
-                          aria-label="view"
-                          size="small"
-                          onClick={handleDeleteOpen}
-                        >
-                          <img src={trashIcon} alt="delete" />
-                        </IconButton> */}
-                        <IconButton
-                          aria-label="edit"
-                          size="small"
-                          onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}
-                        >
-                          <img src={viewIcon} alt="edit" />
-                        </IconButton>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+          {
 
-            </Table>)
-            :
-            (<div className="no-data-wrap">
-              <img src={NoDataImg} alt="No Doctor" />
-              <h5 className="mt-0">No appointment scheduled yet!</h5>
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
-            </div>)
+            isEmpty(data) &&
+            <>
+
+              <PatientTableList PatientData={data} type="fresh" />
+
+
+            </>
 
           }
+
         </TableContainer>
       </Paper>
       <TablePagination
