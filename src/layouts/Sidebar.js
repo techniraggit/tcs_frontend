@@ -4,14 +4,14 @@ import SidebarLogo from '../assets/images/eyemyeye-logo.png';
 import Appointmenticon from '../assets/images/appointment.svg';
 import PatientIcon from '../assets/images/patient.svg';
 import NotificationIcon from '../assets/images/notification.svg';
-import LogoutIcon from '../assets/images/Logout.svg';
+import LogoutIcon from '../assets/images/logout.svg';
 
 function Sidebar() {
   const location = useLocation();
 
   return (
     <>
-      <Link to="/"> <img src={SidebarLogo} alt="POS EyeMyeye" /></Link>
+      <Link to="/appointments"> <img src={SidebarLogo} alt="POS EyeMyeye" /></Link>
       <nav className='retailerSidebar'>
         <ul>
           <li className={`${location.pathname === '/appointments' ? 'active' : ''} `}>
