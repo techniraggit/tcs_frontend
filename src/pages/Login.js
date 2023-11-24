@@ -84,6 +84,7 @@ function SignInForm() {
       navigate('/appointments', { state: { loginSuccess: true } });
       showSnackbar(response?.data?.message, "success");
     } catch (error) {
+      setOtp()
       showSnackbar(error?.response?.data?.message, "error");
     }
   }
