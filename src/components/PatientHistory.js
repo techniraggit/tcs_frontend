@@ -83,6 +83,7 @@ const PatientHistory = () => {
             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Consultations  </Typography>
             <div style={{ marginBottom: '20px' }}>
                 {consultationData != null ? consultationData.map((data) => {
+                    console.log(data);
                     return (<div className='custom-card' style={{ paddingBottom: '0' }}>
                     <div className='head-wrap'>
                         <h5>Prescriptions and Medical Advice</h5>
@@ -117,6 +118,7 @@ const PatientHistory = () => {
                                             <div className="card" key={index} >
                                                 <div className="card-body">
                                                     <p className="card-text">{item['additional_note']}</p>
+                                                    <date>{item['schedule_date']}</date>
                                                 </div>
                                             </div>
 
