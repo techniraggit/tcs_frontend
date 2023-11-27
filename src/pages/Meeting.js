@@ -106,17 +106,19 @@ const Meeting = () => {
   const handleConnectedParticipant = (participant) => {
     // create a div for this participant's tracks
     const participantDiv = document.createElement("div");
-    participantDiv.setAttribute("id", participant.identity);
-    document.getElementById("video-container").appendChild(participantDiv);
+    if(!document.getElementById(participant.identity)) {
+      participantDiv.setAttribute("id", participant.identity);
+      document.getElementById("video-container").appendChild(participantDiv);
 
-    // iterate through the participant's published tracks and
-    // call `handleTrackPublication` on them
-    participant.tracks.forEach((trackPublication) => {
-      handleTrackPublication(trackPublication, participant);
-    });
+      // iterate through the participant's published tracks and
+      // call `handleTrackPublication` on them
+      participant.tracks.forEach((trackPublication) => {
+        handleTrackPublication(trackPublication, participant);
+      });
 
-    // listen for any new track publications
-    participant.on("trackPublished", handleTrackPublication);
+      // listen for any new track publications
+      participant.on("trackPublished", handleTrackPublication);
+    }
   };
 
   const handleTrackPublication = (trackPublication, participant) => {

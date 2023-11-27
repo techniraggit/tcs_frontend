@@ -73,7 +73,7 @@ function PatientTableList(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {PatientData?.map((data,index) => (
+                {PatientData?.slice(props.Page * props.RowsPerPage, props.Page * props.RowsPerPage + props.RowsPerPage).map((data,index) => (
                   <TableRow
                     key={data.patient.name}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

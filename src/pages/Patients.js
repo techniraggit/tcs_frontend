@@ -225,7 +225,7 @@ const Patients = () => {
             isEmpty(data) &&
             <>
 
-              <PatientTableList PatientData={data} type="fresh" />
+              <PatientTableList PatientData={data} Page={page} RowsPerPage={rowsPerPage} type="fresh" />
 
 
             </>
