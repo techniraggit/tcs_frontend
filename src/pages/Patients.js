@@ -36,38 +36,13 @@ import Loader from "../components/Loader";
 import Filter from "../components/Filter";
 import moment from "moment";
 import PatientTableList from "../components/PatientTableList";
-const columns = [
-  { id: "id", label: "Sr.No.", minWidth: 40, },
-  { id: "patientName", label: "Patient name", minWidth: 140 },
-  { id: "mobileNo", label: "Mobile No.", minWidth: 40 },
-  { id: "age", label: "Age", minWidth: 110 },
-  { id: "email", label: "Email", minWidth: 110 },
-  { id: "lastAppointment", label: "last Appointment", minWidth: 110 },
-  { id: "action", label: "Action", minWidth: 140, align: "center" },
-];
-function createData(id, patientName, mobileNo, age, email, lastAppointment, action) {
-  return {
-    id,
-    patientName,
-    mobileNo,
-    age,
-    email,
-    lastAppointment,
-    action
-  };
-}
-const rows = [
-  createData('#2J983KT0', "Theresa Webb", "(+91) 9899772734", "24", "tim.jennings@example.com", "8/16/13", ""),
-  createData('#2J983KT0', "Theresa Webb", "(+91) 9899772734", "24", "tim.jennings@example.com", "8/16/13", ""),
-  createData('#2J983KT0', "Theresa Webb", "(+91) 9899772734", "24", "tim.jennings@example.com", "8/16/13", ""),
-]
 
 
 const Patients = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [openDeleteDialog, setDeleteDialog] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(14);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [patientList, setPatientList] = useState();
 
   const handleChangeRowsPerPage = (event) => {
@@ -114,7 +89,7 @@ const Patients = () => {
 
   // }
   const [filteredResults, setFilteredResults] = useState([]);
-  console.log(filteredResults);
+  console.log(filteredResults.length);
 
 
   const [value, setValue] = useState(0);
@@ -163,6 +138,12 @@ const Patients = () => {
     }
   }, [fromDate, toDate]);
 
+  function onsubmit(params) {
+    searchItems('');
+
+    setFromDate(null)
+    setToDate(null)
+  }
   // console.log(searchQuery)
   return (
     <div>
@@ -214,7 +195,11 @@ const Patients = () => {
                 </LocalizationProvider>
               </div>
             </div>
-            <Button className="buttonPrimary small" type="button" style={{ color: '#fff' }}>
+            <Button className="buttonPrimary small" 
+            type="submit" 
+            onClick={()=>{onsubmit()}}
+        
+            style={{ color: '#fff' }}>
               Reset Filter
             </Button>
           </Grid>
@@ -234,9 +219,9 @@ const Patients = () => {
       </Paper>
       <TablePagination
         className="customTablePagination"
-        rowsPerPageOptions={[14, 28, 50]}
+        rowsPerPageOptions={[10, 25, 50]}
         component="div"
-        count={rows.length}
+        count={filteredResults?.length || 0}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
