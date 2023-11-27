@@ -4,6 +4,7 @@ import CalenderIcon from '../assets/images/calender.svg';
 import { Button, Typography, Grid } from "@mui/material";
 import axios from '../apis/axiosConfig';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 const PatientHistory = () => {
     const params = useParams();
@@ -83,21 +84,24 @@ const PatientHistory = () => {
             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Consultations  </Typography>
             <div style={{ marginBottom: '20px' }}>
                 {consultationData != null ? consultationData.map((data) => {
-                    console.log(data);
-                    return (<div className='custom-card' style={{ paddingBottom: '0' }}>
-                    <div className='head-wrap'>
-                        <h5>Prescriptions and Medical Advice</h5>
-                    </div>
-                    <p>{data.prescription.replace( /(<([^>]+)>)/ig, '')}</p>
-                    {data?.appointment?.schedule_date?
-                    (<div className='bottom-bar'>
-                        <img src={CalenderIcon} alt="Date" />
-                        <span> {new Date(data?.appointment?.schedule_date).toDateString()}</span>
-                        <span style={{ borderRight: '0' }}>{new Date(data?.appointment?.schedule_date).toLocaleTimeString()} - {new Date(new Date(data.appointment.schedule_date).getTime() + 15 * 60000).toLocaleTimeString()}</span>
-                    </div>)
-                    :''}
-                </div>)
-                }):''
+                    return (
+                        <>
+
+                            <div className='custom-card' style={{ paddingBottom: '0' }}>
+                                <div className='head-wrap'>
+                                    <h5>Prescriptions and Medical Advice</h5>
+                                </div>
+                                <p>{data.prescription.replace(/(<([^>]+)>)/ig, '')}</p>
+                                {/* {data?.appointment?.schedule_date? */}
+                                <div className='bottom-bar'>
+                                    <img src={CalenderIcon} alt="Date" />
+                                    <span> {new Date().toDateString()}</span>
+                                    <span style={{ borderRight: '0' }}>{new Date().toLocaleTimeString()}</span>
+                                </div>
+                                {/* :''} */}
+                            </div> </>
+                    )
+                }) : ""
                 }
             </div>
             {
@@ -111,15 +115,25 @@ const PatientHistory = () => {
                             <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Additional Notes or Instructions </Typography>
 
                             {
-                                appointmentDetail?.map((item, index) => {   
+                                appointmentDetail?.map((item, index) => {
                                     return (
                                         <>
 
                                             <div className="card" key={index} >
                                                 <div className="card-body">
                                                     <p className="card-text">{item['additional_note']}</p>
-                                                    <date>{item['schedule_date']}</date>
+
+
+
+                                                    <div className='bottom-bar'>
+                                                        <img src={CalenderIcon} alt="Date" />
+                                                        <span> {new Date(item['schedule_date']).toDateString()}</span>
+                                                        <span style={{ borderRight: '0' }}>{new Date().toLocaleTimeString()}</span>
+                                                    </div>
+                                                    {/* <span> {new Date().toDateString()}</span> */}
+
                                                 </div>
+
                                             </div>
 
                                         </>
