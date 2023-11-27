@@ -38,7 +38,7 @@ import moment from "moment";
 
 function PatientTableList(props) {
     const PatientData=props.PatientData
-    console.log(props.type,PatientData);
+   
     function dateformat(params) {
         return moment(params).format('YYYY-MM-DD')
         
@@ -57,7 +57,7 @@ function PatientTableList(props) {
 
   return (
     <div>
-          {PatientData  ?
+          {PatientData?.length>0  ?
             (<Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -75,10 +75,10 @@ function PatientTableList(props) {
               <TableBody>
                 {PatientData?.slice(props.Page * props.RowsPerPage, props.Page * props.RowsPerPage + props.RowsPerPage).map((data,index) => (
                   <TableRow
-                    key={data.patient.name}
+                    key={index} 
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell> {index+1} </TableCell>
+                    <TableCell> {index +1} </TableCell>
                     <TableCell><span onClick={() => { navigate("/patient-history/"+data.patient.patient_id+"/"+data.patient.user.user_id) }}>{data.patient.name}</span></TableCell>
                     <TableCell>{data?.patient?.phone}</TableCell>
                     <TableCell>{data?.patient?.age}</TableCell>

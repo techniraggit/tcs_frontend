@@ -91,6 +91,7 @@ const Patients = () => {
         if ((response.data)) {
           setPatientList(response?.data?.data);
           setData(response?.data?.data)
+          setFilteredResults(response?.data?.data)
           console.log('patient-listing', response?.data?.data);
         } else {
           console.error("API response is not an array:", response.data);
@@ -112,64 +113,57 @@ const Patients = () => {
   //   return moment(params).format('YYYY-MM-DD')
 
   // }
+  const [filteredResults, setFilteredResults] = useState([]);
+  console.log(filteredResults);
+
 
   const [value, setValue] = useState(0);
   const [filteredListing, setFilteredListing] = useState([]);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [statusListing, setStatusListing] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState({});
   const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
-  // console.log(fromDate?.getTime(), toDate, searchQuery);
-  // console.log(new Date(fromDate).getTime());
-  // setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()+ 86400000));
+  console.log(fromDate, toDate);
 
   const [data, setData] = useState([]);
   function isEmpty(val) {
     return (val === undefined || val == null || val.length <= 0) ? false : true;
   }
 
-  useEffect(() => {
-    // const filteredData = patientList?.filter(item =>
-    //   item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
 
-    // );
-    // console.log('filteredData',filteredData);
 
-    if (searchQuery) {
-      setData(data?.filter(item => item?.patient?.name?.toLowerCase().includes(searchQuery?.toLowerCase())
-      ));
+  const searchItems = (searchValue) => {
+    // setSearchInput(searchValue)
+    setSearchQuery(searchValue);
+
+    if (searchQuery !== '') {
+      const filteredData = patientList.filter((item) => {
+        return Object.values(item?.patient).join().toLowerCase().includes(searchValue.toLowerCase())
+      })
+      setFilteredResults(filteredData)
     }
-    // setData(filteredData);
 
-  }, [searchQuery])
-
-
-
-
+    else {
+      setFilteredResults(patientList)
+    }
+  }
 
 
   useEffect(() => {
     // fromDate, toDate,
     if (fromDate) {
-      setData(data?.filter(value => new Date(value?.patient?.name).getTime() >= new Date(fromDate).getTime()));
+      let res = filteredResults?.filter(value => new Date(value?.patient?.created).getTime() >= new Date(fromDate).getTime())
+      console.log(res);
+      setFilteredResults(res);
     }
-  }, [fromDate]);
-  useEffect(() => {
     if (toDate) {
-      setData(data?.filter(value => new Date(value?.patient?.name).getTime() <= new Date(toDate).getTime() + 86400000));
+      setFilteredResults(filteredResults?.filter(value => new Date(value?.patient?.created).getTime() <= new Date(toDate).getTime() + 86400000));
     }
-  }, [toDate]);
-  // const filterData = (data) => {
-  //     // setFilteredListing(appointmentListing.filter((value) => {
-  //     //     return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
-  //     // }));
+  }, [fromDate, toDate]);
 
-  // }
-
-
-  console.log(searchQuery)
+  // console.log(searchQuery)
   return (
     <div>
       <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Patient </Typography>
@@ -194,10 +188,8 @@ const Patients = () => {
                 placeholder="Search Patient..."
                 inputProps={{ "aria-label": "Search..." }}
                 value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  // props.filterData(e.target.value);
-                }}
+                onChange={(e) => searchItems(e.target.value)}
+
               />
             </Paper>
           </Grid>
@@ -207,9 +199,18 @@ const Patients = () => {
               <div class="filter-wrap custom-datepicker">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
-                    label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
+                    label="From Date" value={fromDate}
+                    onChange={(newValue) => setFromDate(newValue)}
+                  // onChange={(e) => searchItems(e.target.value)}
+
+                  />
                   <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
-                    label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
+                    label="To Date" value={toDate}
+                    onChange={(newValue) => setToDate(newValue)}
+                  // onChange={(e) => searchItems(e.target.value)}
+
+
+                  />
                 </LocalizationProvider>
               </div>
             </div>
@@ -220,17 +221,14 @@ const Patients = () => {
 
         </Grid>
         <TableContainer className="customTable">
-          {
-
-            isEmpty(data) &&
-            <>
-
-              <PatientTableList PatientData={data} Page={page} RowsPerPage={rowsPerPage} type="fresh" />
 
 
-            </>
 
-          }
+
+          <PatientTableList PatientData={filteredResults} Page={page} RowsPerPage={rowsPerPage} type="filter" />
+
+
+
 
         </TableContainer>
       </Paper>
