@@ -91,12 +91,12 @@ const PatientHistory = () => {
                                 <div className='head-wrap'>
                                     <h5>Prescriptions and Medical Advice</h5>
                                 </div>
-                                <p>{data.prescription.replace(/(<([^>]+)>)/ig, '')}</p>
+                                <p>{data?.prescription.replace(/(<([^>]+)>)/ig, '')}</p>
                                 {/* {data?.appointment?.schedule_date? */}
                                 <div className='bottom-bar'>
                                     <img src={CalenderIcon} alt="Date" />
-                                    <span> {new Date().toDateString()}</span>
-                                    <span style={{ borderRight: '0' }}>{new Date().toLocaleTimeString()}</span>
+                                    <span> {new Date(data?.created).toDateString()}</span>
+                                    <span style={{ borderRight: '0' }}>{new Date(data?.created).toLocaleTimeString()}</span>
                                 </div>
                                 {/* :''} */}
                             </div> </>
@@ -119,7 +119,7 @@ const PatientHistory = () => {
                                     return (
                                         <>
 
-                                            <div className="card" key={index} >
+<div className='custom-card' style={{ paddingBottom: '0' }}>
                                                 <div className="card-body">
                                                     <p className="card-text">{item['additional_note']}</p>
 
@@ -128,7 +128,7 @@ const PatientHistory = () => {
                                                     <div className='bottom-bar'>
                                                         <img src={CalenderIcon} alt="Date" />
                                                         <span> {new Date(item['schedule_date']).toDateString()}</span>
-                                                        <span style={{ borderRight: '0' }}>{new Date().toLocaleTimeString()}</span>
+                                                        <span style={{ borderRight: '0' }}>{new Date(item['schedule_date']).toLocaleTimeString()}</span>
                                                     </div>
                                                     {/* <span> {new Date().toDateString()}</span> */}
 
