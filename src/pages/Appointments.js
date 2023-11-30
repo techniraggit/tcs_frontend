@@ -76,7 +76,7 @@ const Appointments = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-console.log(pendingData);
+//console.log(pendingData);
   const handleSelectChange = (event) => {
     setDays(event.target.value);
   };
@@ -100,7 +100,7 @@ console.log(pendingData);
   useEffect(() => {
     if(consultationDate) {
       axios.get(axios.defaults.baseURL+"/doctor/appointments?date="+consultationDate).then((data)=>{
-        console.log('consultaion data', data.data.data);
+        //console.log('consultaion data', data.data.data);
         setConsultationData(data.data.data);
       });
     }
@@ -109,7 +109,7 @@ console.log(pendingData);
     axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=scheduled").then(
       (data) => {
         setNoOfAppointments(data.data.display_data.number_of_appointments);
-        console.log(data);
+        //console.log(data);
         setPendingData(data.data.data);
         setNoAnswer(data.data.display_data.unanswered_patient);
       }
@@ -121,7 +121,7 @@ console.log(pendingData);
     );
     axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=rescheduled").then(
       (data) => {
-        console.log(data.data.data);
+        //console.log(data.data);
         setRescheduledData(data.data.data);
       }
     );
@@ -265,29 +265,36 @@ console.log(pendingData);
                 </Select> */}
               </div>
               <ul>
-                {rescheduledData.length != 0?rescheduledData.map((patient)=>{
-                  return (
-                    <li>
-                    <div>
-                      <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
-                      <div className='info-text'>
-                        <h4>{patient.patient.name}</h4>
-                        <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
-                      </div>
-                    </div>
-                    <div>
-                      <span className='time-wrap'>
-                        <img className='icon' src={TimeIcon} alt='Time' />
-                        {new Date(patient.schedule_date).toLocaleTimeString()}
-                      </span>
-                      {patient.status != 'expired'?
-                      <span className='time-wrap start-call' onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
-                          <FontAwesomeIcon icon={faPhone} />  Start call
-                      </span>:''}
-                    </div>
-                  </li>
-                  )
-                }):(<div className='no-data-wrap'>
+                {rescheduledData.length> 0?(
+<>{
+   rescheduledData.map((patient)=>{
+    //console.log(patient,'patient');
+    return (
+      <li>
+      <div>
+        <span className='pat-circle-wrap'>{patient.patient.name.split(" ").map((n)=>n[0]).join("")}</span>
+        <div className='info-text'>
+          <h4>{patient.patient.name}</h4>
+          <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
+        </div>
+      </div>
+      <div>
+        <span className='time-wrap'>
+          <img className='icon' src={TimeIcon} alt='Time' />
+          {new Date(patient.schedule_date).toLocaleTimeString()}
+        </span>
+        {patient.status != 'expired'?
+        <span className='time-wrap start-call' onClick={()=>{navigate('/meeting/'+patient.room_name)}}>
+            <FontAwesomeIcon icon={faPhone} />  Start call
+        </span>:''}
+      </div>
+    </li>
+    )
+  })
+}
+</>
+                
+               ):(<div className='no-data-wrap'>
                 <img src={NoAppointmentImg} alt="No Appointment" />
                 <p>You don’t have an appointment yet</p>
                 <span>You don’t have a doctor’s appointment scheduled a the moment</span>
@@ -310,7 +317,7 @@ console.log(pendingData);
             <h2>Consultation</h2>
             <div style={{height:'350px', overflowY:'auto'}}>  
             { consultationData.length != 0?(consultationData.map((patient)=>{
-              console.log(patient);
+              //console.log(patient);
               return (<span>  
                 <ul className='person-info'>
                   <li>
