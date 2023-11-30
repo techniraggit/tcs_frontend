@@ -86,8 +86,10 @@ const PatientHistory = () => {
                 {consultationData != null ? consultationData.map((data) => {
                     return (
                         <>
+{data?.prescription && <>
 
-                            <div className='custom-card' style={{ paddingBottom: '0' }}>
+
+    <div className='custom-card' style={{ paddingBottom: '0' }}>
                                 <div className='head-wrap'>
                                     <h5>Prescriptions and Medical Advice</h5>
                                 </div>
@@ -99,7 +101,8 @@ const PatientHistory = () => {
                                     <span style={{ borderRight: '0' }}>{new Date(data?.created).toLocaleTimeString()}</span>
                                 </div>
                                 {/* :''} */}
-                            </div> </>
+                            </div> 
+</>}</>
                     )
                 }) : ""
                 }
@@ -118,23 +121,28 @@ const PatientHistory = () => {
                                 appointmentDetail?.map((item, index) => {
                                     return (
                                         <>
+                                            {item['additional_note'] && <>
 
-<div className='custom-card' style={{ paddingBottom: '0' }}>
-                                                <div className="card-body">
-                                                    <p className="card-text">{item['additional_note']}</p>
+                                                <div className='custom-card' style={{ paddingBottom: '0' }}>
+                                                    <div className="card-body">
+                                                        <p className="card-text">{item['additional_note']}</p>
 
 
 
-                                                    <div className='bottom-bar'>
-                                                        <img src={CalenderIcon} alt="Date" />
-                                                        <span> {new Date(item['schedule_date']).toDateString()}</span>
-                                                        <span style={{ borderRight: '0' }}>{new Date(item['schedule_date']).toLocaleTimeString()}</span>
+                                                        <div className='bottom-bar'>
+                                                            <img src={CalenderIcon} alt="Date" />
+                                                            <span> {new Date(item['schedule_date']).toDateString()}</span>
+                                                            <span style={{ borderRight: '0' }}>{new Date(item['schedule_date']).toLocaleTimeString()}</span>
+                                                        </div>
+                                                        {/* <span> {new Date().toDateString()}</span> */}
+
                                                     </div>
-                                                    {/* <span> {new Date().toDateString()}</span> */}
 
                                                 </div>
 
-                                            </div>
+
+                                            </>
+                                            }
 
                                         </>
                                     )

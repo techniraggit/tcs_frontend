@@ -76,7 +76,7 @@ const Appointments = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+console.log(pendingData);
   const handleSelectChange = (event) => {
     setDays(event.target.value);
   };
@@ -109,7 +109,7 @@ const Appointments = () => {
     axios.get(axios.defaults.baseURL+"/doctor/appointments?search_query=scheduled").then(
       (data) => {
         setNoOfAppointments(data.data.display_data.number_of_appointments);
-        console.log(data.data.data);
+        console.log(data);
         setPendingData(data.data.data);
         setNoAnswer(data.data.display_data.unanswered_patient);
       }
@@ -180,7 +180,9 @@ const Appointments = () => {
                 </Select> */}
               </div>
               <ul>
-                {pendingData.length !=0?pendingData.map((patient)=>{
+                {pendingData.length>0?(
+                  <>
+                  {pendingData?.map((patient)=>{
                   return (
                     <li>
                     <div>
@@ -201,8 +203,11 @@ const Appointments = () => {
                       </span> :''}
                    </div>
                   </li>
-                  )
-                }):(<div className='no-data-wrap'>
+                  )})}
+                  
+                  </>
+                )
+                :(<div className='no-data-wrap'>
                 <img src={NoAppointmentImg} alt="No Appointment" />
                 <p>You don’t have an appointment yet</p>
                 <span>You don’t have a doctor’s appointment scheduled a the moment</span>

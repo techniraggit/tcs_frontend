@@ -145,7 +145,7 @@ const Meeting = () => {
     participant.removeAllListeners();
     // remove this participant's div from the page
     const participantDiv = document.getElementById(participant.identity);
-    participantDiv.remove();
+    participantDiv?.remove();
   };
 
   const joinVideoRoom = async (roomName, token) => {
