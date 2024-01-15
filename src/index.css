@@ -132,6 +132,37 @@ a:hover {
     width: calc(100% - 220px);
   }
 
+  .login-wrap .big-img {
+    margin-right: -5rem;
+  }
+  
+  .login-wrap .img-outer img {
+    width: 70%;
+  }
+  
+  .login-wrap .big-img img {
+    width: 85%;
+  }
+
+}
+
+
+@media only screen and (max-width: 1200px) {
+.login-wrap .big-img {
+  margin-right: -3rem;
+}
+
+.login-wrap .img-outer img {
+  width: 60%;
+}
+
+.login-wrap .big-img img {
+  width: 65%;
+}
+
+.login-wrap .right-wrap {
+  padding-left: 2rem;
+}
 }
 
 @media only screen and (max-width: 1024px) {
@@ -142,5 +173,47 @@ a:hover {
   .body-wrapper .bodyWrap {
     width: 100%;
   }
+
+  .login-wrap .left-wrap {
+    width: 100%;
+}
+
+.login-wrap .right-wrap {
+    width: 100%;
+    padding-left: 0;
+}
+
+.login-wrap .big-img {
+    margin: 0;
+}
+
+.login-wrap .img-outer {
+    padding: 12px;
+}
+
+.login-wrap .right-wrap h1 {
+    font-size: 24px;
+}
+
+.login-wrap .right-wrap .MuiStack-root {
+    margin-bottom: 30px;
+}
+
+.login-wrap .right-wrap .form-outer h1 {
+    font-size: 18px;
+}
+
+.topContentWrap h4 {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.topContentWrap {
+    padding: 2rem 15px 0;
+}
+
+.topContentWrap img {
+    width: 140px;
+}
 
 }
