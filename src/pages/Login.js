@@ -11,6 +11,7 @@ import { Stack } from "@mui/material";
 import logoWhite from "../assets/images/eyemy-logo-white.svg";
 import LoginImg1 from "../assets/images/login-img1.png";
 import LoginImg2 from "../assets/images/login-img2.png";
+import MobileLogo from '../assets/images/eyemyeye-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -198,7 +199,7 @@ const Login = () => {
         {/* Left Info Sidebar */}
         <Grid item className="left-wrap">
           <div className="topContentWrap">
-            <img src={logoWhite} alt="My Image" />
+            <a href="/" className="white-logo"><img src={logoWhite} alt="My Image" /></a>
             <Typography
               mb={10}
               variant="font20"
@@ -219,6 +220,7 @@ const Login = () => {
         <Grid item className="right-wrap">
           <Box sx={{ my: 6, mx: [4, 4, 6] }}>
             <Stack mb={10} sx={{ textAlign: "center", display: "block" }}>
+              <a className="mobile-logo" href="/"><img src={MobileLogo} alt="My Image" /></a>
               <Typography variant="h1">Welcome to Doctor Portal </Typography>
             </Stack>
 

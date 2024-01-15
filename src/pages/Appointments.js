@@ -305,7 +305,7 @@ const Appointments = () => {
             </CustomTabPanel>
           </Box>
         </Grid>
-        <Grid item xs={12} md={5} pl={3} >
+        <Grid item xs={12} md={5} pl={3} className='calender-side' >
           <div className='custom-card calender-wrap'>
             <h2>Calendar</h2>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

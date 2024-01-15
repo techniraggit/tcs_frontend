@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState} from "react";
 import Box from "@mui/material/Box";
 import {
   IconButton,
@@ -15,9 +15,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faAngleDown,
+  faXmark,
+  faBars
 } from "@fortawesome/free-solid-svg-icons";
 import BellIcon from "./../assets/images/notification-icon.svg";
 import Avtaar from "./../assets/images/avtaar.png";
+import headerLogo from '../assets/images/eyemyeye-logo.png';
+import { Link } from 'react-router-dom';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
@@ -72,16 +76,16 @@ function FadeMenu() {
         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
       </Menu>
       <Typography variant="font12" component="p" sx={{ color: "#737791" }}>
-      {localStorage.getItem('type')}
+        {localStorage.getItem('type')}
       </Typography>
     </div>
   );
 }
-export default function Header() {
+export default function Header({ menu, handleShowMenu }) {
   const navigate = useNavigate();
   return (
     <Stack className="header" sx={{ background: "#fff", boxShadow: "none" }}>
-      <Grid container spacing={2} sx={{ alignItems: "center" }}>
+      <Grid container spacing={2} className="mobile-res" sx={{ alignItems: "center" }}>
         <Grid item xs={5} md={5}>
           {/* <Paper component="form" className="headerSearchWrap">
             <InputBase
@@ -105,16 +109,27 @@ export default function Header() {
               alignItems: "center",
             }}
           >
-            <IconButton className="notificationButton" onClick={() => navigate('/notifications')}>
-              <span className="activeIcon"></span>
-              <img src={BellIcon} alt="Notification" />
-            </IconButton>
-            <Avatar
-              alt="Remy Sharp"
-              src={`${axios.defaults.baseURL}${localStorage.getItem('image')}`}
-              sx={{ width: 46, height: 46, borderRadius: "12px" }}
-            />
-            <FadeMenu />
+            <div className="mobile-wrap">
+              <div className="menu-toggle">
+                <span className="bar-wrap" onClick={handleShowMenu}><FontAwesomeIcon icon={faBars} /></span>
+              </div>
+              <Link className="head-logo" to="/appointments"> <img src={headerLogo} alt="POS EyeMyeye" /></Link>
+
+            </div>
+            <div style={{display:'flex', alignItems:'center'}}>
+              <IconButton className="notificationButton" onClick={() => navigate('/notifications')}>
+                <span className="activeIcon"></span>
+                <img src={BellIcon} alt="Notification" />
+              </IconButton>
+              <Avatar
+                className="avatar-wrap"
+                alt="Remy Sharp"
+                src={`${axios.defaults.baseURL}${localStorage.getItem('image')}`}
+                sx={{ width: 46, height: 46, borderRadius: "12px" }}
+              />
+               <FadeMenu />
+            </div>
+           
           </Box>
         </Grid>
       </Grid>

@@ -5,15 +5,35 @@
         margin: 0 -15px;
         padding: 0;
 
+        @media (max-width: 1400px) {
+            margin: 0 -10px;
+        }
+
+        @media (max-width: 1200px) {
+            margin: 0 -6px;
+        }
+
         li {
             width: 50%;
             padding: 0 15px;
+
+            @media (max-width: 1400px) {
+                padding: 0 10px;
+            }
+
+            @media (max-width: 1200px) {
+                padding: 0 6px;
+            }
 
             .card-box {
                 background: #fff;
                 box-shadow: 0px 4px 30px 0px rgb(0 0 0 / 5%);
                 padding: 20px;
                 height: 100%;
+
+                @media (max-width: 767px) {
+                    padding: 10px;
+                }
 
                 .count-img-wrap {
                     display: flex;
@@ -39,9 +59,25 @@
         margin-top: 3rem;
         background: #fff;
 
+        @media (max-width: 1400px) {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            margin: 1.5rem 0;
+        }
+
         h2 {
             font-size: 24px;
             font-weight: 700;
+
+            @media (max-width: 991px) {
+                font-size: 20px;
+            }
+
+            @media (max-width: 767px) {
+                font-size: 18px;
+            }
         }
 
         ul {
@@ -117,6 +153,14 @@
         margin-bottom: 30px;
         h2 {
             text-align: center;
+
+            @media (max-width: 991px) {
+                font-size: 20px;
+            }
+
+            @media (max-width: 767px) {
+                font-size: 18px;
+            }
         }
     }
     
@@ -241,6 +285,11 @@
                 color: #000000;
                 width: 25%;
 
+                @media (max-width: 767px) {
+                    width: 33.333%;
+                    font-size: 14px;
+                }
+
                 &.Mui-selected {
                     color: #4596F3;
                 }
@@ -315,5 +364,11 @@
 
     svg {
         display: none;
+    }
+}
+
+.calender-side {
+    @media (max-width: 900px) {
+        padding-left: 0 !important;
     }
 }
