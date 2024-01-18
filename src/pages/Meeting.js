@@ -157,22 +157,23 @@ const Meeting = () => {
   };
 
   return (
-    <div style={{'textAlign':'center'}}>
+    <div className="meeting-outer" style={{textAlign:'center'}}>
       {!globalRoom?
       (<form id="room-name-form">
-        <Button
-          style={{"position":"absolute","top":"50%","transform":"scale(1.5)"}}
-          type="submit"
-          onClick={(e) => {
-            startRoom(e);
-            e.currentTarget.style.display = 'none';
-          }}
-          color="primary"
-          variant="contained"
-        >
-          Join Room
-        </Button>
-        <span style={{"position":"absolute","top":"60%","left":"42%"}}>Click on above button to Connect with Patient</span>
+          <div className="join-text-wrap">
+              <Button
+              type="submit"
+              onClick={(e) => {
+                startRoom(e);
+                e.currentTarget.style.display = 'none';
+              }}
+              color="primary"
+              variant="contained"
+            >
+              Join Room
+            </Button>
+            <span>Click on above button to Connect with Patient</span>
+          </div>
       </form>):''}
       <div className="videoSection">
         <div id="video-container" className="video-outer" style={styles.video}></div>

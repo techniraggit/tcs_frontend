@@ -96,9 +96,11 @@ const PatientHistory = () => {
                                 <p>{data?.prescription.replace(/(<([^>]+)>)/ig, '')}</p>
                                 {/* {data?.appointment?.schedule_date? */}
                                 <div className='bottom-bar'>
+                                    <div style={{padding:'10px'}}>
                                     <img src={CalenderIcon} alt="Date" />
                                     <span> {new Date(data?.created).toDateString()}</span>
                                     <span style={{ borderRight: '0' }}>{new Date(data?.created).toLocaleTimeString()}</span>
+                                    </div>
                                 </div>
                                 {/* :''} */}
                             </div> 
@@ -130,9 +132,11 @@ const PatientHistory = () => {
 
 
                                                         <div className='bottom-bar'>
+                                                            <div style={{padding:'10px'}}>
                                                             <img src={CalenderIcon} alt="Date" />
                                                             <span> {new Date(item['schedule_date']).toDateString()}</span>
                                                             <span style={{ borderRight: '0' }}>{new Date(item['schedule_date']).toLocaleTimeString()}</span>
+                                                            </div>
                                                         </div>
                                                         {/* <span> {new Date().toDateString()}</span> */}
 

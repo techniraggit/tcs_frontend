@@ -162,7 +162,7 @@ const Appointments = () => {
                 <Tab label="Rescheduled" {...a11yProps(2)} />
               </Tabs>
             </Box>
-            <CustomTabPanel value={value} index={0}>
+            <CustomTabPanel value={value} index={0} className="tab-panel">
               <div className='head-wrap'>
                 <h2>Patient List</h2>
                 {/* <Select
@@ -192,7 +192,7 @@ const Appointments = () => {
                         <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
                       </div>
                     </div>
-                   <div>
+                   <div className='right-btns'>
                    <span className='time-wrap'>
                       <img className='icon' src={TimeIcon} alt='Time' />
                       {new Date(patient.schedule_date).toLocaleTimeString()}
@@ -216,7 +216,7 @@ const Appointments = () => {
                 }
               </ul>
             </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
+            <CustomTabPanel value={value} index={1} className="tab-panel">
               <div className='head-wrap'>
                   <h2>Patient List</h2>
               </div>
@@ -247,7 +247,7 @@ const Appointments = () => {
 
               </ul>
             </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
+            <CustomTabPanel value={value} index={2} className="tab-panel">
             <div className='head-wrap'>
                 <h2>Patient List</h2>
                 {/* <Select
@@ -278,7 +278,7 @@ const Appointments = () => {
           <p><span>#{patient.patient.patient_id}</span> <span>Scheduled Date</span><span style={{ color: '#078539' }}>{patient.schedule_date.split('T')[0]}</span></p>
         </div>
       </div>
-      <div>
+      <div className='right-btns'>
         <span className='time-wrap'>
           <img className='icon' src={TimeIcon} alt='Time' />
           {new Date(patient.schedule_date).toLocaleTimeString()}
