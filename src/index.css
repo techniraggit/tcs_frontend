@@ -293,3 +293,10 @@ span.close-icon {
 
 
 }
+
+@media only screen and (max-width: 767px) {
+  .login-wrap .right-wrap h1 {
+    font-size: 20px;
+  }
+
+}
