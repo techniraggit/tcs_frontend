@@ -1,6 +1,9 @@
 .header {
     padding: 15px 25px;
     box-shadow: 0px 2px 2px 0px #A3ABB942 !important;
+    @media only screen and (max-width: 991px) {
+        padding: 10px 15px;
+    }
 
     .headerSearchWrap {
         display: flex;
@@ -20,11 +23,17 @@
     .notificationButton {
         position: relative;
         border-radius: 6.094px;
-        background: #AACBEB;
+        background: #AACBEB !important;
         width: 36px;
         height: 36px;
         color: #147EFA;
         margin-right: 18px;
+        @media only screen and (max-width: 991px) {
+            width: 25px;
+            height: 25px;
+            padding: 4px;
+            margin-right: 10px;
+        }
 
         .activeIcon {
             width: 5px;
@@ -40,6 +49,10 @@
     .userInfoWrap {
         margin-left: 15px;
 
+        @media only screen and (max-width: 991px) {
+            margin-left: 8px;
+        }
+
         .userInfoToggle {
             width: 100px;
             justify-content: space-between;
@@ -48,6 +61,11 @@
             font-weight: 500px;
             text-transform: capitalize;
             padding: 0;
+
+            @media only screen and (max-width: 991px) {
+                width: 70px;
+                line-height: 1;
+            }
 
             &[aria-expanded="true"] {
                 svg {
@@ -65,6 +83,10 @@
     justify-content: space-between;
     height: calc(100% - 80px);
 
+    @media only screen and (max-width: 991px) {
+        padding-top: 20px;
+    }
+
     ul {
         list-style: none;
 
@@ -79,6 +101,11 @@
                 padding-left: 1rem;
             }
 
+            @media only screen and (max-width: 1200px) {
+                padding-left: 0;
+                border-width: 3px;
+            }
+
             a {
                 display: flex;
                 align-items: center;
@@ -90,9 +117,19 @@
                 padding: 13px 15px;
                 width: 100%;
 
+                @media only screen and (max-width: 991px) {
+                    font-size: 13px;
+                    padding: 8px 10px;
+                }
+
                 img {
                     height: 20px;
                     margin-right: 15px;
+
+                    @media only screen and (max-width: 991px) {
+                        height: 15px;
+                        margin-right: 8px;
+                    }
                 }
             }
 
@@ -119,6 +156,7 @@
 
     .logout-wrap {
         display: flex;
+        align-items: center;
         margin-left: 20px;
         font-family: "Quicksand", sans-serif;
         font-weight: 600;
@@ -127,8 +165,17 @@
         text-decoration: none;
         padding: 13px 15px;
 
+        @media only screen and (max-width: 991px) {
+            font-size: 13px;
+            margin-left: 0;
+        }
+
         img {
             margin-right: 12px;
+            @media only screen and (max-width: 991px) {
+                margin-right: 8px;
+                height: 14px;
+            }
         }
 
         &:hover {
@@ -149,6 +196,10 @@
         top: 80px !important;
         left: auto !important;
         right: 10px !important;
+
+        @media only screen and (max-width: 991px) {
+            top: 60px !important;
+        }
     }
 
     ul {
@@ -158,4 +209,64 @@
             font-size: 14px;
         }
     }
+}
+
+@media only screen and (max-width: 991px) {
+    .mobile-full {
+        width: 100%;
+    }
+    
+    .mobile-res .MuiGrid-grid-md-5 {
+        display: none;
+    }
+    
+    .mobile-res .MuiGrid-grid-md-7 {
+        max-width: 100%;
+        -webkit-flex-basis: 100%;
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        padding: 0;
+    }
+    
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+    }
+    
+    .menu-toggle span.close-wrap {
+        display: none;
+    }
+    
+    .mobile-wrap {
+        display: flex;
+        align-items: center;
+    }
+    
+    .menu-toggle a.head-logo {
+        display: block;
+    }
+    
+    .head-logo img {
+        width: 90px;
+    }
+    
+    a.head-logo {
+        margin: 0 15px;
+    }
+
+    .mobile-res {
+        margin-top: 0;
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .avatar-wrap {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    
+    .mobile-res .MuiGrid-grid-md-7 > .MuiBox-root {
+        justify-content: space-between;
+    }
+    
 }

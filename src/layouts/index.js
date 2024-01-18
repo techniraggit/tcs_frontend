@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import GoToTop from "../components/GoToTop";
+import { useNavigate } from 'react-router-dom';
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -14,14 +15,21 @@ const Alert = React.forwardRef(function Alert(
 });
 
 function Layout() {
-
+    const[menu, setMenu] = useState(false)
+    const navigate = useNavigate();
+    const handleShowMenu = () => {
+        setMenu(true)
+    }
+    const handleHideMenu = () => {
+      setMenu(false)
+    }
     return (
-        <div className="body-wrapper">
-            <div className="sidebar">
-                <Sidebar />
+        <div className={`body-wrapper ${menu ? 'menu-open' : ''}`}>
+            <div className={`sidebar ${menu ? 'show' : ''}`}>
+                <Sidebar handleHideMenu={handleHideMenu} />
             </div>
             <div className="bodyWrap">
-                <Header />
+                <Header menu={menu} handleShowMenu={handleShowMenu} />
                 <div className="mainContentWrap">
                     <Outlet />
                 </div>
