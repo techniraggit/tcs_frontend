@@ -101,7 +101,7 @@
             margin: 0;
             padding: 0 10px;
             margin: 0;
-            height: 580px;
+            max-height: 580px;
             overflow-y: auto;
 
             @media (max-width: 767px) {
@@ -119,6 +119,10 @@
                     display: block;
                     border-bottom: 1px solid #efefef;
                     margin: 0;
+                }
+
+                &:last-child {
+                    border-bottom: 0;
                 }
 
                 .right-btns {

@@ -4,7 +4,7 @@ import axios from 'axios'
 
 function DocterCard(props) {
     const doctorDetails = props.doctorDetails
-    console.log(doctorDetails);
+    console.log(doctorDetails, 'poooo');
 
     let images = 'https://teleconsultation.niraginfotech.info/'
     return (

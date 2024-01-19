@@ -257,6 +257,10 @@ span.close-icon {
   display: none;
 }
 @media only screen and (max-width: 991px) {
+  .body-wrapper {
+    position: relative;
+  }
+
   .body-wrapper .sidebar {
     opacity: 0;
     max-width: 0;
@@ -283,8 +287,9 @@ span.close-icon {
 
   .sidebar.show span.close-icon {
     display: block;
-    text-align: right;
-    margin-right: 16px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 
   span.close-icon {

@@ -315,7 +315,7 @@ const Appointments = () => {
 
           <div className='custom-card consult-wrap'>
             <h2>Consultation</h2>
-            <div style={{height:'350px', overflowY:'auto'}}>  
+            <div style={{maxHeight:'350px', overflowY:'auto'}}>  
             { consultationData.length != 0?(consultationData.map((patient)=>{
               //console.log(patient);
               return (<span>  
