@@ -13,15 +13,9 @@ import { faVideo } from "@fortawesome/free-solid-svg-icons";
 import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
 import { faPhoneSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from 'react-router-dom';
-import "./meeting.css";
+import "../assets/scss/meeting.scss";
 
 const Meeting = () => {
-  const styles = {
-    video: {
-      display: "flex",
-      flexWrap: "wrap",
-    },
-  };
   const params = useParams();
   const navigate = useNavigate();
   const [notepad, setNotepad] = useState("");
@@ -78,7 +72,7 @@ const Meeting = () => {
     // prevent a page reload when a user submits the form
     event.preventDefault();
     // hide the join form
-    document.getElementById("room-name-form").style.display = "flex";
+    document.getElementById("room-name-form").style.display = "block";
     const response = await axios.get(
       axios.defaults.baseURL +
       "/doctor/create_video_room?room_name=" +
@@ -176,7 +170,7 @@ const Meeting = () => {
           </div>
       </form>):''}
       <div className="videoSection">
-        <div id="video-container" className="video-outer" style={styles.video}></div>
+        <div id="video-container" className="video-outer"></div>
 
         {localStorage.getItem('type') === "doctor" && globalRoom? (
           <div id="noteSection" >
