@@ -172,7 +172,7 @@ const Meeting = () => {
       <div className="videoSection">
         <div id="video-container" className="video-outer"></div>
 
-        {/* {localStorage.getItem('type') === "doctor" && globalRoom? ( */}
+        {localStorage.getItem('type') === "doctor" && globalRoom? (
           <div id="noteSection" >
             <ReactQuill
               style={{ width: "100%" }}
@@ -181,9 +181,9 @@ const Meeting = () => {
               onChange={setNotepad}
             />
           </div>
-        {/* ) : (
+        ) : (
           ""
-        )} */}
+        )}
 
       </div>
           {globalRoom?
